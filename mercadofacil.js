@@ -1,10 +1,10 @@
-// ==UserScript==
+Ôªø// ==UserScript==
 // @name	MercadoFacil
-// @description	ModificaÁıes na p·gina do ML para facilitar o gerenciamento das vendas
+// @description	Modifica√ß√µes na p√°gina do ML para facilitar o gerenciamento das vendas
 // @author	daniel.uramg@gmail.com
 // @version	0.26
-// @downloadURL	https://raw.githubusercontent.com/danieluramg/WebTracker-ME-/master/webtrackerme.js
-// @updateURL	https://raw.githubusercontent.com/danieluramg/WebTracker-ME-/master/webtrackerme.js
+// @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
+// @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
 // @require	http://ideias.2p.fm/js/jquery-simple-context-menu/jquery.contextmenu.js
 // @match	http://*.mercadolivre.com.br/*
@@ -17,42 +17,42 @@ $(document).ready(function(){
 
     /******************** RESPOSTAS PREDEFINIDAS PARA PREENCHIMENTO ********************/
 
-    /* Altere somente os 'Pergunta x' e as 'Resposta X' mantendo a formataÁ„o do cÛdigo
-       O Titulo È o que aparece no menu de contexto (breve descriÁ„o), j· a resposta o texto que ser· preenchido */
+    /* Altere somente os 'Pergunta x' e as 'Resposta X' mantendo a formata√ß√£o do c√≥digo
+       O Titulo √© o que aparece no menu de contexto (breve descri√ß√£o), j√° a resposta o texto que ser√° preenchido */
     var resposta = [
-        { 'title': 'Pergunta 1', 'message': 'Resposta um' },
-        { 'title': 'Pergunta 2', 'message': 'Resposta dois' },
-        { 'title': 'Pergunta 3', 'message': 'Resposta tres' },
-        { 'title': 'Pergunta 4', 'message': 'Resposta quatro' },
-        { 'title': 'Pergunta 5', 'message': 'Resposta cinco' },
-        { 'title': 'Pergunta 6', 'message': 'Resposta seis' }
+        { 'title': 'Dist√¢ncia', 'message': 'at√© +- 150mt sem obst√°culos' },
+        { 'title': 'Compat√≠vel', 'message': 'sim funciona perfeitamente' },
+        { 'title': 'Boleto', 'message': 'o pagamento por boleto demorar at√© 2 dias √∫teis para o pagamento ser confirmado, o produto √© enviado ap√≥s confirma√ß√£o de pagamento' },
+        { 'title': 'Em m√£os n√£o', 'message': 'o ML n√£o permite informarmos nenhum tipo de dado pessoal antes da compra, por este motivo envio somente pelos Correios' },
+        { 'title': 'Frete e prazo', 'message': 'o valor do frete e prazo √© calculado diretamente no anuncio' },
+        { 'title': '. Att.', 'message': '. Por favor leia o anuncio com aten√ß√£o antes de concretizar a compra. Att. DIGIPAPER INFORM√ÅTICA' }
     ];
     /******************** RESPOSTAS PREDEFINIDAS PARA PREENCHIMENTO ********************/
 
 
     /******************** OUTRAS MODIFICACOES ********************/
-    //aumentar area de texto da criaÁ„o de anuncios, delay de 5 segundos pra carregar o frame
+    //aumentar area de texto da cria√ß√£o de anuncios, delay de 5 segundos pra carregar o frame
     setTimeout(function(){
         $('#full-description_ifr').removeAttr('style');
         $('#full-description_ifr').attr('style', 'width: 100%; height: 560px; display: block;');
     },5000);
 
-    //Injetar bot„o Chat e botao 'Quero que me liguem' na pagina de contato
+    //Injetar bot√£o Chat e botao 'Quero que me liguem' na pagina de contato
     if ( location.hfer = 'http://contato.mercadolivre.com.br/' ){
-        chat_call_button = '<div class="sections ch-box" id="section-three"><input id="j_id0:j_id1:j_id2:portal-contact:autoGestionCase" name="j_id0:j_id1:j_id2:portal-contact:autoGestionCase" onclick="A4J.AJAX.Submit(\'j_id0:j_id1:j_id2:portal\x2Dcontact\',event,{\'similarityGroupingId\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\',\'parameters\':{\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\'} } );return false;" style="display:none" type="button"><input class="ch-btn ch-btn-big btn-action-margin" id="j_id0:j_id1:j_id2:portal-contact:auxprueba" name="j_id0:j_id1:j_id2:portal-contact:auxprueba" onclick="A4J.AJAX.Submit(\'j_id0:j_id1:j_id2:portal\x2Dcontact\',event,{\'oncomplete\':function(request,event,data){changeStep(2);loadDatePicker(\'Janeiro\',\'Fevereiro\',\'MarÁo\',\'Abril\',\'Maio\',\'Junho\',\'Julho\',\'Agosto\',\'Setembro\',\'Outubro\',\'Novembro\',\'Dezembro\',\'Seg\',\'Ter\',\'Qua\',\'Qui\',\'Sex\',\'Sab\',\'Dom\');},\'similarityGroupingId\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\',\'parameters\':{\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\'} } );return false;" value="Enviar e-mail" style="display:none" type="button"><div class="sub-sections-btn" id="channelBtn"><p style="margin: 0px; padding: 0px;"><div id="buttonChatPortal" style="margin-right: 1em;background: transparent;padding: 0;border: 0;outline: 0;width: 150px; height: 40px; overflow: hidden; float: center; vertical-align: middle;display: inline;"><a id="online-link" href="javascript:\/\/chat" onclick="runChat();return false;" class="online">Iniciar chat<\/a><\/div><\/p><\/div><\/div><button class="ch-btn-skin ch-btn-small" id="startClickToCall" onclick="" aria-label="ch-modal-1">Quero que me liguem</button>';
+        chat_call_button = '<div class="sections ch-box" id="section-three"><input id="j_id0:j_id1:j_id2:portal-contact:autoGestionCase" name="j_id0:j_id1:j_id2:portal-contact:autoGestionCase" onclick="A4J.AJAX.Submit(\'j_id0:j_id1:j_id2:portal\x2Dcontact\',event,{\'similarityGroupingId\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\',\'parameters\':{\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\'} } );return false;" style="display:none" type="button"><input class="ch-btn ch-btn-big btn-action-margin" id="j_id0:j_id1:j_id2:portal-contact:auxprueba" name="j_id0:j_id1:j_id2:portal-contact:auxprueba" onclick="A4J.AJAX.Submit(\'j_id0:j_id1:j_id2:portal\x2Dcontact\',event,{\'oncomplete\':function(request,event,data){changeStep(2);loadDatePicker(\'Janeiro\',\'Fevereiro\',\'Mar√ßo\',\'Abril\',\'Maio\',\'Junho\',\'Julho\',\'Agosto\',\'Setembro\',\'Outubro\',\'Novembro\',\'Dezembro\',\'Seg\',\'Ter\',\'Qua\',\'Qui\',\'Sex\',\'Sab\',\'Dom\');},\'similarityGroupingId\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\',\'parameters\':{\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\'} } );return false;" value="Enviar e-mail" style="display:none" type="button"><div class="sub-sections-btn" id="channelBtn"><p style="margin: 0px; padding: 0px;"><div id="buttonChatPortal" style="margin-right: 1em;background: transparent;padding: 0;border: 0;outline: 0;width: 150px; height: 40px; overflow: hidden; float: center; vertical-align: middle;display: inline;"><a id="online-link" href="javascript:\/\/chat" onclick="runChat();return false;" class="online">Iniciar chat<\/a><\/div><\/p><\/div><\/div><button class="ch-btn-skin ch-btn-small" id="startClickToCall" onclick="" aria-label="ch-modal-1">Quero que me liguem</button>';
         $('a[href="contato"]').after(chat_call_button);
     }
 
     // NA PAGINA DE REUSMO //
     if ( location.href == 'https://myaccount.mercadolivre.com.br/summary' ) {
-        //Link de chat na p·gina de Resumo
+        //Link de chat na p√°gina de Resumo
         user_name = $('#nickName').html(); //capturar nome de usuario
         user_id = userId; //capture id do usuario
         chat_button = '<div id="chat_container" class="chat-container"> <a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null"> <span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;"> Iniciar chat </span> </a><script type="text/javascript"> function runChat() { if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){ var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\'; var winName = \'Chat\'; var winURL = \'https://chat.mercadolibre.com/\'; window.chatWindow=window.open(\'about:blank\',winName,winOpts); var webchatForm = document.createElement(\'form\'); webchatForm.setAttribute(\'action\', winURL); webchatForm.style.display=\'none\'; webchatForm.setAttribute(\'target\',winName); webchatForm.setAttribute(\'method\',\'post\'); var e = document.createElement(\'input\'); e.setAttribute(\'name\',\'userData\'); e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":false,"available_place_in_queue":true,"allow_render":true,"random_access":true,"user":{"user_id":"' + user_id + '","nickname":"' + user_name + '","first_name":" ' + user_name + ' ","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"lang":"pt_BR"})); webchatForm.appendChild(e); document.body.appendChild(webchatForm); webchatForm.submit(); setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000); } window.chatWindow.focus(); } </script> </div>';
         $('#chat_container').remove(); //remove a div do chat
-        $('.myml-title').after(chat_button); //insere a div do chat com a funÁ„o de chamada
+        $('.myml-title').after(chat_button); //insere a div do chat com a fun√ß√£o de chamada
     }
-    //remove banners de publicidade da p·gina de gerenciamento de vendas, resumo, etc
+    //remove banners de publicidade da p√°gina de gerenciamento de vendas, resumo, etc
     $('#oasTOP').remove();
     $('#oasLEFTsrc').remove();
     // NA PAGINA DE REUSMO //
@@ -61,7 +61,7 @@ $(document).ready(function(){
     data = new Date();
     cont = 0; //variavel para so preencher as boas vindas uma vez
 
-    // FUN«√O QUE RETORNA O CUMPRIMENTO DE ACORDO COM O HOR¡RIO
+    // FUN√á√ÉO QUE RETORNA O CUMPRIMENTO DE ACORDO COM O HOR√ÅRIO
     function hello(){ //cria variavel de boas vindas
         if (data.getHours() >= 0 && data.getHours() <= 12){
             return "Bom dia";
@@ -76,7 +76,7 @@ $(document).ready(function(){
 
     /******************** NA PAGINA DE PERGUNTAS ********************/
     if ( location.host == 'questions.mercadolivre.com.br' ) {
-        console.log("FunÁıes da pagina de perguntas"); //debug
+        console.log("Fun√ß√µes da pagina de perguntas"); //debug
         //preencher boas vindas no campo de responder perguntas
         setTimeout(function(){
             $('textarea').click(function(e){
@@ -137,11 +137,11 @@ $(document).ready(function(){
                     /******************** NA PAGINA DE PERGUNTAS ********************/
                     }
 
-                    //Recarregar p·gina de chat atÈ aparecer alguÈm
+                    //Recarregar p√°gina de chat at√© aparecer algu√©m
                     //$("h3").before("<span> (Autoreload)</span>"); //insere titulo
 
 setTimeout(function(){
-if ( $('#user').html() == "Ops! N„o tem ninguÈm disponÌvel agora. Por favor, tente em alguns minutos"){
+if ( $('#user').html() == "Ops! N√£o tem ningu√©m dispon√≠vel agora. Por favor, tente em alguns minutos"){
     $('<span> - (reload)</span>').appendTo('#user');
     location.reload();
 }
