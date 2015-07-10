@@ -20,12 +20,12 @@ $(document).ready(function(){
     /* Altere somente os 'Pergunta x' e as 'Resposta X' mantendo a formatação do código
        O Titulo é o que aparece no menu de contexto (breve descrição), já a resposta o texto que será preenchido */
     var resposta = [
-        { 'title': 'Distância', 'message': 'até +- 150mt sem obstáculos' },
-        { 'title': 'Compatível', 'message': 'sim funciona perfeitamente' },
-        { 'title': 'Boleto', 'message': 'o pagamento por boleto demorar até 2 dias úteis para o pagamento ser confirmado, o produto é enviado após confirmação de pagamento' },
-        { 'title': 'Em mãos não', 'message': 'o ML não permite informarmos nenhum tipo de dado pessoal antes da compra, por este motivo envio somente pelos Correios' },
-        { 'title': 'Frete e prazo', 'message': 'o valor do frete e prazo é calculado diretamente no anuncio' },
-        { 'title': '. Att.', 'message': '. Por favor leia o anuncio com atenção antes de concretizar a compra. Att. DIGIPAPER INFORMÁTICA' }
+        { 'title': 'Pergunta 1', 'message': 'Resposta um' },
+        { 'title': 'Pergunta 2', 'message': 'Resposta dois' },
+        { 'title': 'Pergunta 3', 'message': 'Resposta tres' },
+        { 'title': 'Pergunta 4', 'message': 'Resposta quatro' },
+        { 'title': 'Pergunta 5', 'message': 'Resposta cinco' },
+        { 'title': 'Pergunta 6', 'message': 'Resposta seis' }
     ];
     /******************** RESPOSTAS PREDEFINIDAS PARA PREENCHIMENTO ********************/
 
