@@ -12,7 +12,6 @@
 padrão aleatoriamente, geralmente só para usuários com muitas vendas, agora sempre estará disponível;
 ![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
 
-![](http://s27.postimg.org/xln1z9okj/image.png)
 ps.: Logicamente o chat e "quero que me liguem" depende de atendentes disponíveis no momento! O script também ficará recarregando automaticamente a janela de chat até um representante atender.
 
 - Ao responder uma pergunta preenche automaticamente 'Bom dia/tarde/noite, ' de acordo com o horário atual (só clicar no campo de resposta que preenche);
