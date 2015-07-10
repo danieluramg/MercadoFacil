@@ -2,7 +2,7 @@
 // @name	MercadoFacil
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	daniel.uramg@gmail.com
-// @version	0.26
+// @version	0.27
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -16,13 +16,15 @@
 $(document).ready(function(){
 
     /******************** RESPOSTAS PREDEFINIDAS PARA PREENCHIMENTO ********************/
+user_name = $('#nickName').html(); //Define variável com o nome de usuário para poder usar nas respostas prontas
 
     /* Altere somente os 'Pergunta x' e as 'Resposta X' mantendo a formatação do código
-       O Titulo é o que aparece no menu de contexto (breve descrição), já a resposta o texto que será preenchido */
+       O Titulo é o que aparece no menu de contexto (breve descrição), já a resposta o texto que será preenchido 
+       Siga os exemplos das respostas já definidas */
     var resposta = [
-        { 'title': 'Pergunta 1', 'message': 'Resposta um' },
-        { 'title': 'Pergunta 2', 'message': 'Resposta dois' },
-        { 'title': 'Pergunta 3', 'message': 'Resposta tres' },
+        { 'title': 'Boleto', 'message': 'o pagamento por boleto demora até 2 dias úteis para ser confirmado' },
+        { 'title': 'Frete e prazo', 'message': 'o valor do frete e prazo é calculado diretamente no anuncio' },
+        { 'title': 'Saudação', 'message': 'Atenciosamente, ' + user_name },
         { 'title': 'Pergunta 4', 'message': 'Resposta quatro' },
         { 'title': 'Pergunta 5', 'message': 'Resposta cinco' },
         { 'title': 'Pergunta 6', 'message': 'Resposta seis' }
