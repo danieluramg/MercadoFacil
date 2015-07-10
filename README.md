@@ -8,11 +8,10 @@
 ![](http://s3.postimg.org/3m16ceujn/antes.png)
 ![](http://s3.postimg.org/n2lvyxpnn/depois.png)
 
-- Injeta link do Chat na página de Resumo;
-![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
-
 - Injeta link de  Chat na página de Resumo do MercadoLivre: Este link para contato direto com atendentes do ML aparece por
 padrão aleatoriamente, geralmente só para usuários com muitas vendas, agora sempre estará disponível;
+![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
+
 ![](http://s27.postimg.org/xln1z9okj/image.png)
 ps.: Logicamente o chat e "quero que me liguem" depende de atendentes disponíveis no momento! O script também ficará recarregando automaticamente a janela de chat até um representante atender.
 
