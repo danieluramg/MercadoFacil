@@ -16,7 +16,11 @@
 $(document).ready(function(){
 
     /******************** RESPOSTAS PREDEFINIDAS PARA PREENCHIMENTO ********************/
-user_name = $('#nickName').html(); //Define variável com o nome de usuário para poder usar nas respostas prontas
+    if (typeof user != "undefined") { //Define variável com o nome de usuário para poder usar nas respostas prontas
+        user_name = user.nickname;
+    } else {
+        user_name = $('#nickName').html();
+    }
 
     /* Altere somente os 'Pergunta x' e as 'Resposta X' mantendo a formatação do código
        O Titulo é o que aparece no menu de contexto (breve descrição), já a resposta o texto que será preenchido 
