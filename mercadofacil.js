@@ -1,8 +1,8 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name	MercadoFacil
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	daniel.uramg@gmail.com
-// @version	0.27
+// @version	0.28
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -43,26 +43,45 @@ $(document).ready(function(){
         $('#full-description_ifr').attr('style', 'width: 100%; height: 560px; display: block;');
     },5000);
 
-    //Injetar botão Chat e botao 'Quero que me liguem' na pagina de contato
-    if ( location.hfer = 'http://contato.mercadolivre.com.br/' ){
-        chat_call_button = '<div class="sections ch-box" id="section-three"><input id="j_id0:j_id1:j_id2:portal-contact:autoGestionCase" name="j_id0:j_id1:j_id2:portal-contact:autoGestionCase" onclick="A4J.AJAX.Submit(\'j_id0:j_id1:j_id2:portal\x2Dcontact\',event,{\'similarityGroupingId\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\',\'parameters\':{\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:autoGestionCase\'} } );return false;" style="display:none" type="button"><input class="ch-btn ch-btn-big btn-action-margin" id="j_id0:j_id1:j_id2:portal-contact:auxprueba" name="j_id0:j_id1:j_id2:portal-contact:auxprueba" onclick="A4J.AJAX.Submit(\'j_id0:j_id1:j_id2:portal\x2Dcontact\',event,{\'oncomplete\':function(request,event,data){changeStep(2);loadDatePicker(\'Janeiro\',\'Fevereiro\',\'Março\',\'Abril\',\'Maio\',\'Junho\',\'Julho\',\'Agosto\',\'Setembro\',\'Outubro\',\'Novembro\',\'Dezembro\',\'Seg\',\'Ter\',\'Qua\',\'Qui\',\'Sex\',\'Sab\',\'Dom\');},\'similarityGroupingId\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\',\'parameters\':{\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\':\'j_id0:j_id1:j_id2:portal\x2Dcontact:auxprueba\'} } );return false;" value="Enviar e-mail" style="display:none" type="button"><div class="sub-sections-btn" id="channelBtn"><p style="margin: 0px; padding: 0px;"><div id="buttonChatPortal" style="margin-right: 1em;background: transparent;padding: 0;border: 0;outline: 0;width: 150px; height: 40px; overflow: hidden; float: center; vertical-align: middle;display: inline;"><a id="online-link" href="javascript:\/\/chat" onclick="runChat();return false;" class="online">Iniciar chat<\/a><\/div><\/p><\/div><\/div><button class="ch-btn-skin ch-btn-small" id="startClickToCall" onclick="" aria-label="ch-modal-1">Quero que me liguem</button>';
-        $('a[href="contato"]').after(chat_call_button);
+
+    // NA PAGINA DE AJUDA E CONTATO //
+    if ( location.hfer = 'http://contato.mercadolivre.com.br/ajuda' ){
+        // testa para saber se ja foi registrado o userName do usuário
+        if (GM_getValue("mercadoFacil_userName")==null){
+            // avisa que tera que ir a pagina de resumo para registrar o userName
+            alert("Para que o chat seja mostrado nesta tela você tera que estar logado e visitar a página de resumo para que seu USERID seja registrado.\nVocê será redirecionado para a página de Resumo.");
+            location.href="https://myaccount.mercadolivre.com.br/summary";
+        }else{
+            // mostra o link para o chat
+            user_name = GM_getValue("mercadoFacil_userName");
+            user_id = GM_getValue("mercadoFacil_userID");
+            chat_call_button = '<p style="font-size:20px"><a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null">Iniciar o chat com um representante</a><script type="text/javascript">function runChat() {if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\';var winName = \'Chat\';var winURL = \'https://chat.mercadolibre.com/\';window.chatWindow=window.open(\'about:blank\',winName,winOpts);var webchatForm = document.createElement(\'form\');webchatForm.setAttribute(\'action\', winURL);webchatForm.style.display=\'none\';webchatForm.setAttribute(\'target\',winName);webchatForm.setAttribute(\'method\',\'post\');var e = document.createElement(\'input\');e.setAttribute(\'name\',\'userData\');e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":"","available_place_in_queue":"","allow_render":true,"user":{"user_id":"'+user_id+'","nickname":"'+user_name+'","first_name":"'+user_name+'","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","segment":"LONG_TAIL","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"group":"ML_PORTAL_HOME","idx":2,"article_number":"","articleDescription":"HomeNewPortal","sf":{"from_nw_mlportal__c":true},"lang":"pt_BR"}));webchatForm.appendChild(e);document.body.appendChild(webchatForm);webchatForm.submit();setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000);}window.chatWindow.focus();}</script></p>';
+            $('.secondary-content').before(chat_call_button);
+        }
     }
+    // NA PAGINA DE AJUDA E CONTATO //
 
     // NA PAGINA DE REUSMO //
     if ( location.href == 'https://myaccount.mercadolivre.com.br/summary' ) {
+        insertChatResumo();
+    }
+    // NA PAGINA DE REUSMO //
+
+    function insertChatResumo(){
         //Link de chat na página de Resumo
         user_name = $('#nickName').html(); //capturar nome de usuario
-        user_id = userId; //capture id do usuario
-        chat_button = '<div id="chat_container" class="chat-container"> <a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null"> <span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;"> Iniciar chat </span> </a><script type="text/javascript"> function runChat() { if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){ var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\'; var winName = \'Chat\'; var winURL = \'https://chat.mercadolibre.com/\'; window.chatWindow=window.open(\'about:blank\',winName,winOpts); var webchatForm = document.createElement(\'form\'); webchatForm.setAttribute(\'action\', winURL); webchatForm.style.display=\'none\'; webchatForm.setAttribute(\'target\',winName); webchatForm.setAttribute(\'method\',\'post\'); var e = document.createElement(\'input\'); e.setAttribute(\'name\',\'userData\'); e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":false,"available_place_in_queue":true,"allow_render":true,"random_access":true,"user":{"user_id":"' + user_id + '","nickname":"' + user_name + '","first_name":" ' + user_name + ' ","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"lang":"pt_BR"})); webchatForm.appendChild(e); document.body.appendChild(webchatForm); webchatForm.submit(); setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000); } window.chatWindow.focus(); } </script> </div>';
+        user_id = userId; //capturar id do usuario
+        // registra o userName e o userID para ser acessado futuramente
+        GM_setValue ("mercadoFacil_userName", user_name);
+        GM_setValue ("mercadoFacil_userID", user_id);
+        chat_button = '<div id="chat_container" class="chat-container"> <a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null"><span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;"> Iniciar chat </span></a><script type="text/javascript">function runChat() {if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\';var winName = \'Chat\';var winURL = \'https://chat.mercadolibre.com/\';window.chatWindow=window.open(\'about:blank\',winName,winOpts);var webchatForm = document.createElement(\'form\');webchatForm.setAttribute(\'action\', winURL);webchatForm.style.display=\'none\';webchatForm.setAttribute(\'target\',winName);webchatForm.setAttribute(\'method\',\'post\');var e = document.createElement(\'input\');e.setAttribute(\'name\',\'userData\');e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":"","available_place_in_queue":"","allow_render":true,"user":{"user_id":"'+user_id+'","nickname":"'+user_name+'","first_name":"'+user_name+'","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","segment":"LONG_TAIL","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"group":"ML_PORTAL_HOME","idx":2,"article_number":"","articleDescription":"HomeNewPortal","sf":{"from_nw_mlportal__c":true},"lang":"pt_BR"}));webchatForm.appendChild(e);document.body.appendChild(webchatForm);webchatForm.submit();setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000);}window.chatWindow.focus();}</script></div>';
         $('#chat_container').remove(); //remove a div do chat
         $('.myml-title').after(chat_button); //insere a div do chat com a função de chamada
     }
+
     //remove banners de publicidade da página de gerenciamento de vendas, resumo, etc
     $('#oasTOP').remove();
     $('#oasLEFTsrc').remove();
-    // NA PAGINA DE REUSMO //
-
 
     data = new Date();
     cont = 0; //variavel para so preencher as boas vindas uma vez
@@ -78,13 +97,12 @@ $(document).ready(function(){
         }
     }
 
-
-
     /******************** NA PAGINA DE PERGUNTAS ********************/
     if ( location.host == 'questions.mercadolivre.com.br' ) {
         console.log("Funções da pagina de perguntas"); //debug
         //preencher boas vindas no campo de responder perguntas
         setTimeout(function(){
+            console.log("entrou na função do delay"); //debug
             $('textarea').click(function(e){
                 console.log(e.target + " clicado"); //debug
                 if (! $(e.target).attr('comp') && $(e.target).attr('name') == 'Answer' ){ //se existir a variaves as boas-vindas nao serao preenchidas
@@ -92,7 +110,7 @@ $(document).ready(function(){
                     $(e.target).attr('comp', '1'); //atributo para so preencher as boas vindas uma vez
                 }
             })
-        },2000);
+        },5000);
 
         /******************** MENU DE CONTEXTO PARA RESPOSTAS PREDEFINIDAS ********************/
 
@@ -146,13 +164,13 @@ $(document).ready(function(){
                     //Recarregar página de chat até aparecer alguém
                     //$("h3").before("<span> (Autoreload)</span>"); //insere titulo
 
-setTimeout(function(){
-if ( $('#user').html() == "Ops! Não tem ninguém disponível agora. Por favor, tente em alguns minutos"){
-    $('<span> - (reload)</span>').appendTo('#user');
-    location.reload();
-}
-},500);
-                    
+                    setTimeout(function(){
+                    if ( $('#user').html() == "Ops! Não tem ninguém disponível agora. Por favor, tente em alguns minutos"){
+                    $('<span> - (reload)</span>').appendTo('#user');
+                    location.reload();
+                    }
+                    },1000);
+
 
                     /******************** OUTRAS MODIFICACOES ********************/
 
