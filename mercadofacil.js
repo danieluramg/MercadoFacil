@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name	MercadoFacil
+// @website https://github.com/danieluramg/MercadoFacil/
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
-// @author	daniel.uramg@gmail.com
+// @author	Daniel Plácido (daniel.uramg@gmail.com)
+// @contributor	Marco Silveira (vastar@globo.com)
 // @version	0.29
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
