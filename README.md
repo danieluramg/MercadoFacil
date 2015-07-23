@@ -1,6 +1,6 @@
 # MercadoFacil
- Desenvolvido por: Daniel Plácido (daniel.uramg@gmail.com)
- Colaborador: Marco Silveira (vastar@globo.com)
+ - Desenvolvido por: Daniel Plácido (daniel.uramg@gmail.com)
+ - Colaborador: Marco Silveira (vastar@globo.com)
  
 #Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre:
 - Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google Chorme ou Greasemonkey no Firefox (Não testado no FF).
