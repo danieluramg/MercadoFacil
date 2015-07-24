@@ -18,7 +18,7 @@
 $(document).ready(function(){
 
     //  PAGINA DE AJUDA E CONTATO //
-    if ( location.hfer == 'http://contato.mercadolivre.com.br/ajuda' ){
+    if ( location.href == 'http://contato.mercadolivre.com.br/ajuda' ){
         // testa para saber se ja foi registrado o userName do usuário
         if (GM_getValue("mercadoFacil_userName")==null){
             // avisa que tera que ir a pagina de resumo para registrar o userName
