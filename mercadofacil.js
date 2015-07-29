@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.31
+// @version	0.32
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -36,11 +36,11 @@ $(document).ready(function(){
     mf_r6 = GM_getValue("mercadoFacil_r6");
     mf_first_install = GM_getValue("mercadoFacil_first_install");
     mf_cumprimento = GM_getValue("mercadoFacil_cumprimento");
-    mf_banners = GM_getValue("mercadoFaicl_banners");
+    mf_respostas = GM_getValue("mercadoFacil_respostas");
+    mf_banners = GM_getValue("mercadoFacil_banners");
     mf_delay_chat = GM_getValue("mercadoFacil_delay_chat"); if (mf_delay_chat == null) mf_delay_chat = '1000';
     mf_textarea = GM_getValue("mercadoFacil_textarea"); if (mf_textarea == null) mf_textarea = '560';
 
-    // Se for a primeira instalação já abre o form de configuração
     if (mf_first_install != "instalado"){
         mfacil_config();
     }
@@ -139,14 +139,24 @@ $(document).ready(function(){
     function mfacil_config(){
         //injeta mascara de fundo e div com o formulário
         $('body').append('<div id="mfacil_fundo" style="  background-color: rgba(0,0,0,0.5);width: 100%;height: 100%;position: fixed;left: 0;top: 0;z-index: 1011;"></div>');
-        html_form_mfacil = '<div id="div_mfacil" style="z-index: 1011;background-color: #FFFFFF"> <a class="ch-close" onclick="$(\'#div_mfacil, #mfacil_fundo\').remove();" style="z-index:1010"></a> <h1 class="main-title title title--primary">MercadoFacil</h1> <input type="hidden" id="mfacil_first_install" value="instalado"> <table> <tbody> <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário"> <td>Ativar/Desativar cumprimento automático</td> <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td> </tr> <tr title="Remover banners de publicidade da página de Resumo"> <td>Remover banners de publicidade da página de Resumo </td> <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td> </tr> <tr title="Tempo em Milisegundos para o chat ser atualizdo automaticamente quando não tiver atendente disponível"> <td>Tempo para atualizar o Chat</td> <td> &nbsp;<input type="text" id="mfacil_delay_chat" value="' + mf_delay_chat + '" size="5"> ms (padrão 1000ms {1 segundo})</td> </tr> <tr title="Ajusta a altura da Textarea de criação de anuncios"> <td>Altura da Textarea de criação de anúncios</td> <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td> </tr> </tbody> </table>  <h1>Respostas Prontas:</h1> <table> <thead> <tr><th>Título</th> <th>Resposta</th></tr> </thead> <tbody> <tr> <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td> </tr> <tr> <td> <button id="mfacil_salvar" class="ch-btn">Salvar</button> </td> </tr> </tbody>  </table> </div>';
+        html_form_mfacil = '<div id="div_mfacil" style="z-index: 1011;background-color: #FFFFFF"> <a class="ch-close" onclick="$(\'#div_mfacil, #mfacil_fundo\').remove();" style="z-index:1010"></a> <h1 class="main-title title title--primary">MercadoFacil</h1> <input type="hidden" id="mfacil_first_install" value="instalado"> <table> <tbody> <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário"> <td>Ativar/Desativar cumprimento automático</td> <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td> </tr> <tr title="Remover banners de publicidade da página de Resumo"> <td>Remover banners de publicidade da página de Resumo </td> <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td> </tr> <tr title="Tempo em Milisegundos para o chat ser atualizdo automaticamente quando não tiver atendente disponível"> <td>Tempo para atualizar o Chat</td> <td> &nbsp;<input type="text" id="mfacil_delay_chat" value="' + mf_delay_chat + '" size="5"> ms (padrão 1000ms {1 segundo})</td> </tr> <tr title="Ajusta a altura da Textarea de criação de anuncios"> <td>Altura da Textarea de criação de anúncios</td> <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td> </tr> <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático"> <td>Ativar/Desativar Respostas prontas</td> <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td> </tr>     </tbody>     </table>         <div id="respostas_prontas" style="display: none;"> <table> <thead> <tr><th>Título</th> <th>Resposta</th></tr> </thead> <tbody> <tr> <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td> </tr> <script type="javascript" src="Untitled-1.js" />  <tr> <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td> </tr> </tbody>  </table>         </div>     <button id="mfacil_salvar" class="ch-btn">Salvar</button> </div>';
         $('#mfacil_fundo').after(html_form_mfacil);
+        if (mf_respostas == 'checked') $('#respostas_prontas').attr('style', 'display: block;');
     }
     //injeta css da div de configuração das respostas
     $("head").append("<style type='text/css'>#div_mfacil{box-shadow: 0 3px 14px #333; border-radius: 5px; display:block;position:fixed;top:400px;left:50%;margin-left:-300px;margin-top:-300px;padding:10px;width:650px;border:0px solid #000;z-index:100;}</style>");
     $(document).on('click', '#mfacil_config', function(){ //quando for clicado no menu de config das respostas
         mfacil_config();
     });
+
+    $(document).on('click', '#mfacil_respostas', function(){
+        respostas_ativas = $('#mfacil_respostas').is(":checked");
+        if (respostas_ativas == true){
+            $('#respostas_prontas').attr('style', 'display: block;');
+        }else{
+            $('#respostas_prontas').attr('style', 'display: none;');
+        }
+    })
     // FORM DE CONFIGURAÇÃO DO MERCADOFACIL //
 
     // SALVAR FORM DO MERCADOFACIL //
@@ -179,7 +189,14 @@ $(document).ready(function(){
         } else {
             mfacil_banners = "";
         }
-        GM_setValue ("mercadoFaicl_banners", mfacil_banners);
+        GM_setValue ("mercadoFacil_banners", mfacil_banners);
+
+        if ($("#mfacil_respostas").is(":checked") == true){
+            mfacil_respostas = "checked";
+        } else {
+            mfacil_respostas = "";
+        }
+        GM_setValue ("mercadoFacil_respostas", mfacil_respostas);
 
         alert("Configurações salvas com sucesso!");
         location.reload();
@@ -212,46 +229,48 @@ $(document).ready(function(){
         cssdata = " .contextMenuPlugin {   -webkit-user-select: none;   display: none;   font-family: tahoma, arial, sans-serif;   font-size: 11px;   position: absolute;   left: 100px;   top: 100px;   min-width: 100px;   list-style-type: none;   margin: 0;   padding: 0;   background-color: #f7f3f7;   border: 2px solid #f7f7f7;   outline: 1px solid #949694; }  .contextMenuPlugin > li {   margin: 0 0 0 0;   padding: 1px;   background-repeat: no-repeat; }  .contextMenuPlugin > li > a {   position: relative;   display: block;   padding: 3px 3px 3px 28px;   color: ButtonText;   text-decoration: none;   margin: 1px; }  .contextMenuPlugin > li > a img {   position: absolute;   left: 3px;   margin-top: -2px;   width: 16px;   height: 16px; } .contextMenuPlugin > li > a:hover {   border: 1px solid #fffbff;   outline: 1px solid #b5d3ff;   margin: 0;   background: -moz-linear-gradient(top, rgba(239,239,255,0.5) 0%, rgba(223,223,255,0.5) 100%); /* FF3.6+ */   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(239,239,255,0.5)), color-stop(100%,rgba(223,223,255,0.5))); /* Chrome,Safari4+ */   background: -webkit-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* Chrome10+,Safari5.1+ */   background: -o-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* Opera11.10+ */   background: -ms-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* IE10+ */   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80efefff', endColorstr='#80dfdfff',GradientType=0 ); /* IE6-9 */   background: linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* W3C */   cursor: default; }  .contextMenuPlugin > li.disabled {   pointer-events: none; }  .contextMenuPlugin > li.disabled a {   color: grey; }  .contextMenuPlugin > li.disabled > a:hover {   border: none;   outline: none; }  .contextMenuPlugin > li.divider {   border-top: 1px solid #e7e3e7;   border-bottom: 1px solid #ffffff;   height: 0;   padding: 0;   margin: 5px 0 5px 27px; }  .contextMenuPlugin > .header {   background: rgb(90,90,90); /* Old browsers */   background: -moz-linear-gradient(top, rgba(90,90,90,1) 0%, rgba(20,20,20,1) 100%); /* FF3.6+ */   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(90,90,90,1)), color-stop(100%,rgba(20,20,20,1))); /* Chrome,Safari4+ */   background: -webkit-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* Chrome10+,Safari5.1+ */   background: -o-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* Opera11.10+ */   background: -ms-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* IE10+ */   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a5a5a', endColorstr='#141414',GradientType=0 ); /* IE6-9 */   background: linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* W3C */   position: relative;   cursor: default;   padding: 3px 3px 3px 3px;   color: #ffffff; }  .contextMenuPlugin > .gutterLine {   position: absolute;   border-left: 1px solid #e7e3e7;   border-right: 1px solid #ffffff;   width: 0;   top: 0;   bottom: 0;   left: 26px;   z-index: 0; } ";
         $("head").append("<style type='text/css'>"+cssdata+"</style>");
 
-        setTimeout(function(){
-            $('textarea').contextPopup({
-                title: 'Respostas Prontas:',
-                items: [
-                    {label:mf_t1, action:function(e) {
-                        currentText = $(e.target).val();
-                        $(e.target).val(currentText + mf_r1);
-                    }
-                    },
-                    {label:mf_t2, action:function(e) {
-                        currentText = $(e.target).val();
-                        $(e.target).val(currentText + mf_r2);
-                    }
-                    },
-                    {label:mf_t3, action:function(e) {
-                        currentText = $(e.target).val();
-                        $(e.target).val(currentText + mf_r3);
-                    }
-                    },
-                    {label:mf_t4, action:function(e) {
-                        currentText = $(e.target).val();
-                        $(e.target).val(currentText + mf_r4);
-                    }
-                    },
-                    {label:mf_t5, action:function(e) {
-                        currentText = $(e.target).val();
-                        $(e.target).val(currentText + mf_r5);
-                    }
-                    },
-                    {label:mf_t6, action:function(e) {
-                        currentText = $(e.target).val();
-                        $(e.target).val(currentText + mf_r6);
-                    }
-                    },
-                ]
-                    })
-                    },2000);
-                    /******************** MENU DE CONTEXTO PARA RESPOSTAS PREDEFINIDAS ********************/
+        if (mf_respostas == 'checked'){
+            setTimeout(function(){
+                $('textarea').contextPopup({
+                    title: 'Respostas Prontas:',
+                    items: [
+                        {label:mf_t1, action:function(e) {
+                            currentText = $(e.target).val();
+                            $(e.target).val(currentText + mf_r1);
+                        }
+                        },
+                        {label:mf_t2, action:function(e) {
+                            currentText = $(e.target).val();
+                            $(e.target).val(currentText + mf_r2);
+                        }
+                        },
+                        {label:mf_t3, action:function(e) {
+                            currentText = $(e.target).val();
+                            $(e.target).val(currentText + mf_r3);
+                        }
+                        },
+                        {label:mf_t4, action:function(e) {
+                            currentText = $(e.target).val();
+                            $(e.target).val(currentText + mf_r4);
+                        }
+                        },
+                        {label:mf_t5, action:function(e) {
+                            currentText = $(e.target).val();
+                            $(e.target).val(currentText + mf_r5);
+                        }
+                        },
+                        {label:mf_t6, action:function(e) {
+                            currentText = $(e.target).val();
+                            $(e.target).val(currentText + mf_r6);
+                        }
+                        },
+                    ]
+                        })
+                        },2000);
+                        }
+                        /******************** MENU DE CONTEXTO PARA RESPOSTAS PREDEFINIDAS ********************/
 
-                    /******************** NA PAGINA DE PERGUNTAS ********************/
-                    }
+                        /******************** NA PAGINA DE PERGUNTAS ********************/
+                        }
 
-                    })
+                        })
