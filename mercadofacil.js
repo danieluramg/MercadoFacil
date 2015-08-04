@@ -4,7 +4,11 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
+<<<<<<< HEAD
 // @version	0.33
+=======
+// @version	0.32
+>>>>>>> origin/master
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -37,12 +41,18 @@ $(document).ready(function(){
     mf_first_install = GM_getValue("mercadoFacil_first_install");
     mf_cumprimento = GM_getValue("mercadoFacil_cumprimento");
     mf_respostas = GM_getValue("mercadoFacil_respostas");
+<<<<<<< HEAD
     mf_perguntas = GM_getValue("mercadoFacil_perguntas");
+=======
+>>>>>>> origin/master
     mf_banners = GM_getValue("mercadoFacil_banners");
     mf_delay_chat = GM_getValue("mercadoFacil_delay_chat"); if (mf_delay_chat == null) mf_delay_chat = '1000';
     mf_textarea = GM_getValue("mercadoFacil_textarea"); if (mf_textarea == null) mf_textarea = '560';
 
+<<<<<<< HEAD
     //Se for a primeira vez que o script é carregado exibe Div de configuração
+=======
+>>>>>>> origin/master
     if (mf_first_install != "instalado"){
         mfacil_config();
     }
@@ -159,7 +169,11 @@ $(document).ready(function(){
     function mfacil_config(){
         //injeta mascara de fundo e div com o formulário
         $('body').append('<div id="mfacil_fundo" style="  background-color: rgba(0,0,0,0.5);width: 100%;height: 100%;position: fixed;left: 0;top: 0;z-index: 1011;"></div>');
+<<<<<<< HEAD
         html_form_mfacil = '<div id="div_mfacil" style="z-index: 1011;background-color: #FFFFFF"> <a class="ch-close" onclick="$(\'#div_mfacil, #mfacil_fundo\').remove();" style="z-index:1010"></a> <h1 class="main-title title title--primary">MercadoFacil</h1> <input type="hidden" id="mfacil_first_install" value="instalado"> <table> <tbody> <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário"> <td>Ativar/Desativar cumprimento automático</td> <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td> </tr> <tr title="Remover banners de publicidade da página de Resumo"> <td>Remover banners de publicidade da página de Resumo </td> <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td> </tr> <tr title="Tempo em Milisegundos para o chat ser atualizdo automaticamente quando não tiver atendente disponível"> <td>Tempo para atualizar o Chat</td> <td> &nbsp;<input type="text" id="mfacil_delay_chat" value="' + mf_delay_chat + '" size="5"> ms (padrão 1000ms {1 segundo})</td> </tr> <tr title="Ajusta a altura da Textarea de criação de anuncios"> <td>Altura da Textarea de criação de anúncios</td> <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td> </tr> <tr title="Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar redireciona para a página para responder"> <td>Ativar/Desativar verificação de perguntas pendentes</td> <td> &nbsp;<input type="checkbox" id="mfacil_perguntas" ' + mf_perguntas + '></td> </tr> <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático"> <td>Ativar/Desativar Respostas prontas</td> <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td> </tr>     </tbody>     </table>         <div id="respostas_prontas" style="display: none;">     <table> <thead> <tr><th>Título</th> <th>Resposta</th></tr> </thead> <tbody> <tr> <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td> </tr> </tbody>  </table>         </div>     <button id="mfacil_salvar" class="ch-btn">Salvar</button> </div>';
+=======
+        html_form_mfacil = '<div id="div_mfacil" style="z-index: 1011;background-color: #FFFFFF"> <a class="ch-close" onclick="$(\'#div_mfacil, #mfacil_fundo\').remove();" style="z-index:1010"></a> <h1 class="main-title title title--primary">MercadoFacil</h1> <input type="hidden" id="mfacil_first_install" value="instalado"> <table> <tbody> <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário"> <td>Ativar/Desativar cumprimento automático</td> <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td> </tr> <tr title="Remover banners de publicidade da página de Resumo"> <td>Remover banners de publicidade da página de Resumo </td> <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td> </tr> <tr title="Tempo em Milisegundos para o chat ser atualizdo automaticamente quando não tiver atendente disponível"> <td>Tempo para atualizar o Chat</td> <td> &nbsp;<input type="text" id="mfacil_delay_chat" value="' + mf_delay_chat + '" size="5"> ms (padrão 1000ms {1 segundo})</td> </tr> <tr title="Ajusta a altura da Textarea de criação de anuncios"> <td>Altura da Textarea de criação de anúncios</td> <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td> </tr> <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático"> <td>Ativar/Desativar Respostas prontas</td> <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td> </tr>     </tbody>     </table>         <div id="respostas_prontas" style="display: none;"> <table> <thead> <tr><th>Título</th> <th>Resposta</th></tr> </thead> <tbody> <tr> <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td> </tr> <script type="javascript" src="Untitled-1.js" />  <tr> <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td> </tr> <tr> <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td> <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td> </tr> </tbody>  </table>         </div>     <button id="mfacil_salvar" class="ch-btn">Salvar</button> </div>';
+>>>>>>> origin/master
         $('#mfacil_fundo').after(html_form_mfacil);
         if (mf_respostas == 'checked') $('#respostas_prontas').attr('style', 'display: block;');
     }
@@ -217,6 +231,7 @@ $(document).ready(function(){
             mfacil_respostas = "";
         }
         GM_setValue ("mercadoFacil_respostas", mfacil_respostas);
+<<<<<<< HEAD
 
         if ($("#mfacil_perguntas").is(":checked") == true){
             mfacil_perguntas = "checked";
@@ -224,6 +239,8 @@ $(document).ready(function(){
             mfacil_perguntas = "";
         }
         GM_setValue ("mercadoFacil_perguntas", mfacil_perguntas);
+=======
+>>>>>>> origin/master
 
         alert("Configurações salvas com sucesso!");
         location.reload();
@@ -293,7 +310,11 @@ $(document).ready(function(){
                         },
                     ]
                         })
+<<<<<<< HEAD
                         },2500);
+=======
+                        },2000);
+>>>>>>> origin/master
                         }
                         /******************** MENU DE CONTEXTO PARA RESPOSTAS PREDEFINIDAS ********************/
 
