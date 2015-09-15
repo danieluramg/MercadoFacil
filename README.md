@@ -26,6 +26,7 @@
 Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situação do pagamento de todas suas vendas de uma vez, e exibir a situação de cada uma na lista de vendas;
 ![](http://s1.postimg.org/r4p7e9rwf/vifig_pag.jpg)
 
+
 - Tempo para atualizar o Chat (enquanto não tiver atendentes disponíveis, fica atualizando o chat automaticamente nesse tempo até aparecer alguém):
 O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre: Este link para contato direto com atendentes do ML aparece por padrão aleatoriamente (geralmente só para usuários com muitas vendas), agora sempre estará disponível!
 ![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
