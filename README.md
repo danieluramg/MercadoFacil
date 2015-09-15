@@ -3,7 +3,7 @@
  - Colaborador: Marco Silveira (vastar@globo.com)
  
 #Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
-
+- Se esta ferramenta tem te ajudado considere fazer uma doação! https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daniel%2euramg%40gmail%2ecom&lc=BR&item_name=MercadoFacil%20para%20MercadoLivre%21&no_note=0&currency_code=BRL&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
 #Instalação:
 - Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google Chrome: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
 - Depois instale o Userscript do MercadoFacil: http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
@@ -23,7 +23,7 @@ Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situaçã
 ![](http://s1.postimg.org/r4p7e9rwf/vifig_pag.jpg)
 
 - Tempo para atualizar o Chat (enquanto não tiver atendentes disponíveis, fica atualizando o chat automaticamente nesse tempo até aparecer alguém):
-O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre: Este link para contato direto com atendentes do ML aparece por padrão aleatoriamente (geralmente só para usuários com muitas vendas), agora sempre estará disponível!;
+O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre: Este link para contato direto com atendentes do ML aparece por padrão aleatoriamente (geralmente só para usuários com muitas vendas), agora sempre estará disponível!
 ![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
 
 - Altura da Textarea de criação de anúncios	- Ajusta a altura da Textarea de criação de anuncios;
