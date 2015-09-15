@@ -2,7 +2,7 @@
  - Desenvolvido por: Daniel Plácido (daniel.uramg@gmail.com)
  - Colaborador: Marco Silveira (vastar@globo.com)
  
-#Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre:
+#Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
 
 #Instalação:
 - Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
