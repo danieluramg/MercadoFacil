@@ -34,7 +34,7 @@ Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situaçã
 ![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
 
 - Altura da Textarea de criação de anúncios:
- - Particularmente acho o tamanho padrão desta área de texto muito pequena para criar anuncios, então com esta opção ajuste a seu gosto a a altura da Textarea de criação de anuncios;
+ - Particularmente acho o tamanho padrão desta área de texto muito pequena para criar anuncios, então com esta opção ajuste a seu gosto a altura da Textarea de criação de anuncios;
 ![](http://s3.postimg.org/3m16ceujn/antes.png)
 ![](http://s3.postimg.org/n2lvyxpnn/depois.png)
 
