@@ -12,9 +12,11 @@
 
 #O que isto faz?
 - Depois de instalado, vai ser criado um novo menu em sua página do MercadoLivre para efetuar as configurações do MercadoFacil:
+- 
 ![](http://s4.postimg.org/jlax7p159/menu.png)
 ![](http://s30.postimg.org/mp59ibfo1/formulario.png)
 
+#Explicando cada opção:
 - Ativar/Desativar cumprimento automático: Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário;
 ![](http://s9.postimg.org/plf50xh27/image.png)
 
