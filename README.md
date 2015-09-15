@@ -3,7 +3,8 @@
  - Colaborador: Marco Silveira (vastar@globo.com)
  
 #Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
-- Se esta ferramenta tem te ajudado considere fazer uma doação! https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daniel%2euramg%40gmail%2ecom&lc=BR&item_name=MercadoFacil%20para%20MercadoLivre%21&no_note=0&currency_code=BRL&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
+- Se esta ferramenta tem te ajudado considere fazer uma doação: https://goo.gl/gRlz5t
+
 #Instalação:
 - Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google Chrome: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
 - Depois instale o Userscript do MercadoFacil: http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
