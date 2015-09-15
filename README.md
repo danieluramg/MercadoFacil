@@ -7,7 +7,7 @@
 **Se esta ferramenta tem te ajudado considere fazer uma doação:** [https://goo.gl/gRlz5t](https://goo.gl/gRlz5t)
 
 ## Instalação:
-- Para usar instale o complemento Tampermonkey no Google Chrome: [https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+- Primeiro instale o complemento Tampermonkey no Google Chrome: [https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)
 - Depois instale o Userscript do MercadoFacil: [http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js](http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js)
 
 # O que isto faz?
