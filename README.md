@@ -39,7 +39,5 @@ O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre: Este l
 
 - Ativar/Desativar Respostas prontas - Crie até 6 respostas prontas que irão aparecer no menu de contexto (botão direito) no campo de 
 respoder as perguntas:
-![](http://s17.postimg.org/6f5uo9zrj/image.png)
-![](http://s17.postimg.org/o7rew5gzz/image.png)
 ![](http://s17.postimg.org/pbbj841n3/image.png)
 ![](http://s17.postimg.org/b2bwq1n4f/image.png)
