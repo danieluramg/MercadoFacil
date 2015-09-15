@@ -5,11 +5,11 @@
 #Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
 
 #Instalação:
-- Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
+- Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google Chrome: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
 - Depois instale o Userscript do MercadoFacil: http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 
 #O que isto faz?
--Depois de instalado, vai ser criado um novo menu em sua página do MercadoLivre para efetuar as configurações do MercadoFacil:
+- Depois de instalado, vai ser criado um novo menu em sua página do MercadoLivre para efetuar as configurações do MercadoFacil:
 ![](http://s4.postimg.org/jlax7p159/menu.png)
 ![](http://s30.postimg.org/mp59ibfo1/formulario.png)
 
@@ -18,7 +18,7 @@
 
 - Remover banners de publicidade da página de Resumo;
 
--Ativar/Desativar verificação de pagamento liberado: Com frequencia acontece de o MercadoLivre "esquecer" de nos pagar sobre uma determinada venda, e normalmente só ficamos sabendo disto quando acessamos os Detalhes de cada venda.
+- Ativar/Desativar verificação de pagamento liberado: Com frequencia acontece de o MercadoLivre "esquecer" de nos pagar sobre uma determinada venda, e normalmente só ficamos sabendo disto quando acessamos os Detalhes de cada venda.
 Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situação do pagamento de todas suas vendas de uma vez, e exibir a situação de cada uma na lista de vendas;
 ![](http://s1.postimg.org/r4p7e9rwf/vifig_pag.jpg)
 
