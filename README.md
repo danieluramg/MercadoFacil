@@ -3,24 +3,36 @@
  - Colaborador: Marco Silveira (vastar@globo.com)
  
 #Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre:
-- Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google Chorme ou Greasemonkey no Firefox (Não testado no FF).
 
-- Aumenta a área de texto de criação de anuncios: Por default a área de texto é muito pequena na altura dificultando bastante a criação e edição de anuncios;
+#Instalação:
+- Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
+- Depois instale o Userscript do MercadoFacil: http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
+
+#O que isto faz?
+-Depois de instalado, vai ser criado um novo menu em sua página do MercadoLivre para efetuar as configurações do MercadoFacil:
+![](http://s4.postimg.org/jlax7p159/menu.png)
+![](http://s30.postimg.org/mp59ibfo1/formulario.png)
+
+- Ativar/Desativar cumprimento automático: Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário;
+![](http://s9.postimg.org/plf50xh27/image.png)
+
+- Remover banners de publicidade da página de Resumo;
+
+-Ativar/Desativar verificação de pagamento liberado: Com frequencia acontece de o MercadoLivre "esquecer" de nos pagar sobre uma determinada venda, e normalmente só ficamos sabendo disto quando acessamos os Detalhes de cada venda.
+Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situação do pagamento de todas suas vendas de uma vez, e exibir a situação de cada uma na lista de vendas;
+![](http://s1.postimg.org/r4p7e9rwf/vifig_pag.jpg)
+
+- Tempo para atualizar o Chat (enquanto não tiver atendentes disponíveis, fica atualizando o chat automaticamente nesse tempo até aparecer alguém):
+O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre: Este link para contato direto com atendentes do ML aparece por padrão aleatoriamente (geralmente só para usuários com muitas vendas), agora sempre estará disponível!;
+![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
+
+- Altura da Textarea de criação de anúncios	- Ajusta a altura da Textarea de criação de anuncios;
 ![](http://s3.postimg.org/3m16ceujn/antes.png)
 ![](http://s3.postimg.org/n2lvyxpnn/depois.png)
 
-- Remove o banner de publicidade da página de Resumo;
+- Ativar/Desativar verificação de perguntas pendentes - Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar toca um som de alerta;
 
-- Injeta link de  Chat na página de Resumo do MercadoLivre: Este link para contato direto com atendentes do ML aparece por
-padrão aleatoriamente, geralmente só para usuários com muitas vendas, agora sempre estará disponível;
-![](http://s14.postimg.org/v8t1psc01/Resumo_Mercado_Livre.png)
-
-ps.: Logicamente o chat depende de atendentes disponíveis no momento, o script também ficará recarregando automaticamente a janela de chat até um representante atender!
-
-- Ao responder uma pergunta preenche automaticamente 'Bom dia/tarde/noite, ' de acordo com o horário atual (só clicar no campo de resposta que preenche);
-![](http://s9.postimg.org/plf50xh27/image.png)
-
-- Respostas predefinidas: Crie até 6 respostas prontas que irão aparecer no menu de contexto (botão direito) no campo de 
+- Ativar/Desativar Respostas prontas - Crie até 6 respostas prontas que irão aparecer no menu de contexto (botão direito) no campo de 
 respoder as perguntas:
 ![](http://s17.postimg.org/6f5uo9zrj/image.png)
 ![](http://s17.postimg.org/o7rew5gzz/image.png)
