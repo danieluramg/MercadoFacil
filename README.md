@@ -20,7 +20,7 @@
 - Ativar/Desativar cumprimento automático: Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário;
 ![](http://s9.postimg.org/plf50xh27/image.png)
 
-- Remover banners de publicidade da página de Resumo;
+- Remover banners de publicidade da página de Resumo (Auto explicativo);
 
 - Ativar/Desativar verificação de pagamento liberado: Com frequencia acontece de o MercadoLivre "esquecer" de nos pagar sobre uma determinada venda, e normalmente só ficamos sabendo disto quando acessamos os Detalhes de cada venda.
 Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situação do pagamento de todas suas vendas de uma vez, e exibir a situação de cada uma na lista de vendas;
