@@ -3,10 +3,11 @@
  - Colaborador: Marco Silveira (vastar@globo.com)
  
 #Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
+- Esta ferramente é em formato de UserScript (não é uma API do MercadoLivre), e é totalmente grátis e de código aberto para quem dezejar contribuir com melhorias e correções!
 - Se esta ferramenta tem te ajudado considere fazer uma doação: https://goo.gl/gRlz5t
 
 #Instalação:
-- Esta ferramente é em formato de UserScript, para usar instale o complemento Tampermonkey no Google Chrome: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
+- Para usar instale o complemento Tampermonkey no Google Chrome: https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo
 - Depois instale o Userscript do MercadoFacil: http://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 
 #O que isto faz?
