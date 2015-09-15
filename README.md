@@ -1,9 +1,7 @@
-# MercadoFacil
+# MercadoFacil - Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
+- Esta ferramente é em formato de UserScript (não é uma API do MercadoLivre), e é totalmente grátis e de código aberto para quem dezejar contribuir com melhorias e correções!
  - Desenvolvido por: Daniel Plácido (daniel.uramg@gmail.com)
  - Colaborador: Marco Silveira (vastar@globo.com)
- 
-#Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
-- Esta ferramente é em formato de UserScript (não é uma API do MercadoLivre), e é totalmente grátis e de código aberto para quem dezejar contribuir com melhorias e correções!
 - Se esta ferramenta tem te ajudado considere fazer uma doação: https://goo.gl/gRlz5t
 
 #Instalação:
