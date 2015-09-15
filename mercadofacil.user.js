@@ -200,7 +200,7 @@ $(document).ready(function(){
 		if (mf_respostas == 'checked') $('#respostas_prontas').attr('style', 'display: block;');
 	}
 	//injeta css da div de configuração das respostas
-	$("head").append("<style type='text/css'>#div_mfacil{box-shadow: 0 3px 14px #333; border-radius: 5px; display:block;position:fixed;top:400px;left:50%;margin-left:-300px;margin-top:-300px;padding:10px;width:650px;border:0px solid #000;z-index:100;}</style>");
+	$("head").append("<style type='text/css'>#div_mfacil{box-shadow: 0 3px 14px #333; border-radius: 5px; display:block;position:absolute;top:400px;left:50%;margin-left:-300px;margin-top:-300px;padding:10px;width:650px;border:0px solid #000;z-index:100;}</style>");
 	$(document).on('click', '#mfacil_config', function(){ //quando for clicado no menu de config das respostas
 		mfacil_config();
 	});
