@@ -26,7 +26,7 @@
 - Ativar/Desativar verificação de pagamento liberado:
  - Com frequencia acontece de o MercadoLivre "esquecer" de nos pagar sobre uma determinada venda, e normalmente só ficamos sabendo disto quando acessamos os Detalhes de cada venda.
 Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situação do pagamento de todas suas vendas de uma vez, e exibir a situação de cada uma na lista de vendas;
-![](http://s1.postimg.org/r4p7e9rwf/vifig_pag.jpg)
+![](http://s1.postimg.org/l7ixrk4r3/download.png)
 
 
 - Tempo para atualizar o Chat (enquanto não tiver atendentes disponíveis, fica atualizando o chat automaticamente nesse tempo até aparecer alguém):
