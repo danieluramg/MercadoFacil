@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.38
+// @version	0.39
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -100,16 +100,18 @@ $(document).ready(function(){
     }
 
     function carregar_pagamento(id_venda){
-        $('#mf_pgto'+id_venda).load('/sales/obtainOrdersData?orderId='+ id_venda + ' #textMedioPago');
-        if (debug == 1) GM_log('Informação de pagamento adicionada, venda: ' + id_venda); //debug
-        setTimeout(function(){
-            retorno_pagamento = $('#mf_pgto'+id_venda).html();
-            if (retorno_pagamento.search('hoje') >= 1) pgto_hoje += 1;
-            if (retorno_pagamento.search('amanhã') >= 1) pgto_amanha += 1;
-            if (retorno_pagamento.search('erro') >= 1) pgto_erro += 1;
-            $('#mf_sit_pgtos').empty();
-            $('#mf_sit_pgtos').append('<b>Foi encontrado <span style="color: red;">' + pgto_erro + '</span> pagamento(s) com erro, hoje será liberado <span style="color: red;">' + pgto_hoje + '</span> pagamento(s), e amanhã sera liberado <span style="color: red;">' + pgto_amanha + '</span> pagamento(s)!</b>');
-        },5000);
+        $('#mf_pgto'+id_venda).load('/sales/obtainOrdersData?orderId='+ id_venda + ' #textMedioPago', function(responseTxt, statusTxt, xhr){
+            if(statusTxt == "success"){
+                if (debug == 1) GM_log('Informação de pagamento adicionada, venda: ' + id_venda); //debug
+                if (responseTxt.search('hoje') >= 1) pgto_hoje += 1;
+                if (responseTxt.search('a partir de amanhã') >= 1) pgto_amanha += 1;
+                if (responseTxt.search('Por um erro nosso') >= 1) pgto_erro += 1;
+                $('#mf_sit_pgtos').empty();
+                $('#mf_sit_pgtos').append('<b>Foi encontrado <span style="color: red;">' + pgto_erro + '</span> pagamento(s) com erro, hoje será liberado <span style="color: red;">' + pgto_hoje + '</span> pagamento(s), e amanhã sera liberado <span style="color: red;">' + pgto_amanha + '</span> pagamento(s)!</b>');
+            }
+            if(statusTxt == "error")
+                alert("Error: " + xhr.status + ": " + xhr.statusText);
+        });
     }
 
     if(location.href.search('/sales/list') >=1 && mf_pagamento == 'checked'){
@@ -294,7 +296,7 @@ $(document).ready(function(){
             function cumprimento() {
                 $('textarea').click(function(e){
                     if (debug == 1) GM_log(e.target + " clicado"); //debug
-                    if (! $(e.target).attr('comp') && $(e.target).attr('name') == 'Answer' ){ //se existir a variaves as boas-vindas nao serao preenchidas
+                    if (! $(e.target).attr('comp') && $(e.target).attr('name') == 'text' ){ //se existir a variaves as boas-vindas nao serao preenchidas
                         $(e.target).val(hello() + ", ");
                         $(e.target).attr('comp', '1'); //atributo para so preencher as boas vindas uma vez
                     }
