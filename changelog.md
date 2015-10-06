@@ -1,3 +1,7 @@
 - V0.38
  - Agora o contador de pagamentos liberados, exibe no topo da página de Vendas uma mensagem com o número de pagamentos que estavam com erro, quantos tem o pagamento liberados hoje e quantos serão liberados amanhã.
  - ![](http://s24.postimg.org/ndb7i9i79/download.png)
+
+- V0.39
+ - Correção de bugs na "Verificação de Pagamentos";
+ - Correção do "Cumprimento Automático" (O ML mudou a name da textarea)
