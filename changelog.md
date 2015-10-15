@@ -5,3 +5,6 @@
 - V0.39
  - Correção de bugs na "Verificação de Pagamentos";
  - Correção do "Cumprimento Automático" (O ML mudou a name da textarea)
+
+- V0.40
+ - Corrigido chat (Créditos do Marcos, obrigado!)
