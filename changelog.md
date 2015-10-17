@@ -1,3 +1,4 @@
+<table>
 <ul>
 	<li>V0.40</li>
 <ul>
@@ -21,3 +22,4 @@
 	<p><img src="http://s24.postimg.org/ndb7i9i79/download.png"></p>
 </ul>
 </ul>
+</table>
