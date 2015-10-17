@@ -14,7 +14,7 @@
 - Depois de instalado, vai ser criado um novo menu em sua página do MercadoLivre para efetuar as configurações do MercadoFacil:
 
 ![](http://s4.postimg.org/jlax7p159/menu.png)
-![](http://s30.postimg.org/mp59ibfo1/formulario.png)
+![](http://s29.postimg.org/t4woay9g7/config.png)
 
 ## Explicando cada opção:
 - Ativar/Desativar cumprimento automático:
@@ -28,6 +28,7 @@
 Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situação do pagamento de todas suas vendas de uma vez, e exibir a situação de cada uma na lista de vendas;
 ![](http://s1.postimg.org/l7ixrk4r3/download.png)
 
+- Ativar/Desativar Chat (Auto explicativo);
 
 - Tempo para atualizar o Chat (enquanto não tiver atendentes disponíveis, fica atualizando o chat automaticamente nesse tempo até aparecer alguém):
  - O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre, este link para contato direto com atendentes do ML aparece por padrão aleatoriamente (geralmente só para usuários com muitas vendas), agora sempre estará disponível!
@@ -47,3 +48,7 @@ Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situaçã
 respoder as perguntas:
 ![](http://s17.postimg.org/pbbj841n3/image.png)
 ![](http://s17.postimg.org/b2bwq1n4f/image.png)
+
+- Marcar Positivos:
+ - Qualifique quem te qualificou Positivo: Acesse suas vendas Encerradas, então filtre por Estado: "Sem Qualificar" (pessoas que você não qualificou), então clique no botão "Marcar Positivos", daí clique na engrenagem e clique em Qualificar para você qualificar todos que te qualificaram Positivo!
+ - ![](http://s29.postimg.org/d5e0redef/marcar_qualif.png)
