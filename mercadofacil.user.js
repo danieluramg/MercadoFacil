@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.40
+// @version	0.41
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -21,12 +21,17 @@
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
+    version = '0.41';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
     $('#CONFIG').after(mfacil_button);
 
+    //Classe para a div de configuração e changelog
+    $("head").append("<style type='text/css'>#div_mfacil{box-shadow: 0 3px 14px #333; border-radius: 5px; display:block;position:absolute;top:400px;left:50%;margin-left:-300px;margin-top:-300px;padding:10px;width:750px;border:0px solid #000;z-index:100;}</style>");
+
     //variávels das configurações salvas do MercadoFacil
+    mf_version = GM_getValue("mercadoFacil_version");
     mf_t1 = GM_getValue("mercadoFacil_t1");
     mf_t2 = GM_getValue("mercadoFacil_t2");
     mf_t3 = GM_getValue("mercadoFacil_t3");
@@ -45,6 +50,7 @@ $(document).ready(function(){
     mf_perguntas = GM_getValue("mercadoFacil_perguntas");
     mf_banners = GM_getValue("mercadoFacil_banners");
     mf_pagamento = GM_getValue("mercadoFacil_pagamento");
+    mf_chat = GM_getValue("mercadoFacil_chat");
     mf_delay_chat = GM_getValue("mercadoFacil_delay_chat"); if (mf_delay_chat == null) mf_delay_chat = '1000';
     mf_textarea = GM_getValue("mercadoFacil_textarea"); if (mf_textarea == null) mf_textarea = '560';
 
@@ -52,6 +58,16 @@ $(document).ready(function(){
     if (mf_first_install != "instalado"){
         mfacil_config();
     }
+
+    // se o MercadoFacil foi atualizado exibe o Changelog //
+    if ( version != mf_version){
+        $('body').append('<div id="mfacil_fundo" style="  background-color: rgba(0,0,0,0.5);width: 100%;height: 100%;position: fixed;left: 0;top: 0;z-index: 1011;"></div>');
+        html_changelog = '<div id="div_mfacil" style="z-index: 1011;background-color: #FFFFFF">   <a class="ch-close" onclick="$(\'#div_mfacil, #mfacil_fundo\').remove();" style="z-index:1010"></a> <h1 class="main-title title title--primary">O MercadoFacil foi atualizado:</h1> <div id="changelog" style="display: block;"></div></div>';
+        $('#mfacil_fundo').after(html_changelog);
+        $('#changelog').load('https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/changelog.html');
+        GM_setValue("mercadoFacil_version", version);
+    }
+    // se o MercadoFacil foi atualizado exibe o Changelog //
 
     // VERIFICA PERGUNTAS PENDENTES //
     function verifica_perguntas(){
@@ -122,7 +138,7 @@ $(document).ready(function(){
     //VERIFICAÇÃO DE PAGAMENTO LIBERADO //
 
     //  PAGINA DE AJUDA E CONTATO //
-    if ( location.href == 'http://contato.mercadolivre.com.br/ajuda' ){
+    if (location.href == 'http://contato.mercadolivre.com.br/ajuda' && mf_chat == 'checked'){
         // testa para saber se ja foi registrado o userName do usuário
         if (GM_getValue("mercadoFacil_userName")==null){
 
@@ -147,9 +163,7 @@ $(document).ready(function(){
     //  PAGINA DE AJUDA E CONTATO //
 
     //  PAGINA DE REUSMO //
-    if ( location.href == 'https://myaccount.mercadolivre.com.br/summary' || location.href == 'https://myaccount.mercadolivre.com.br/summary/'  ) {
-        insertChatResumo();
-    }
+    if ( location.href.search('/summary') >= 1 && mf_chat == 'checked' ) insertChatResumo();
     //  PAGINA DE REUSMO //
 
     // NO CHAT //
@@ -190,6 +204,34 @@ $(document).ready(function(){
     }
     // FUNÇÃO QUE RETORNA O CUMPRIMENTO DE ACORDO COM O HORÁRIO //
 
+    //FUNÇÃO PARA MARCAR AS COMPRAS DE QUEM QUALIFICOU POSITIVO //
+    //da um delay pra pagina carregar as vendas
+    setTimeout(function(){
+        //verifica se está na página de vendas Encerradas
+        if(location.href.search('type=archived') >=1 ){
+            //injeta o botão
+            $('#tab-archived').after('<input type="button" id="mf_mk_qualif" value="Marcar Positivos" class="ch-btn-skin ch-btn-small">');
+        }
+    },6000);
+
+    //função que roda depois do clique
+    $(document).on('click', '#mf_mk_qualif', function(){
+        //conta quantas vendas tem na pagina
+        conta_vendas = $('#itemsList .item-list').length;
+
+        for (i = 1; i <= conta_vendas; i++){
+            //pega o ID da venda
+            id_venda = $('.item-list:nth-child('+i+')').attr('id').replace('theItemRow', '');
+            //retorna a string de qualificação
+            qualif = $('#itemRow' + id_venda + ' #calificationBuyer' + id_venda + ' .item-status-aligner').html();
+            //se foi qualificado Positivo da um clique para marcar esta venda
+            if (qualif == 'Você foi qualificado positivo'){
+                $('#' + id_venda).click();
+            }
+        }
+    })    
+    //FUNÇÃO PARA MARCAR AS COMPRAS DE QUEM QUALIFICOU POSITIVO //
+
     //aumentar area de texto da criação de anuncios, delay de 5 segundos pra carregar o frame
     setTimeout(function(){
         $('#full-description_ifr').removeAttr('style');
@@ -210,8 +252,7 @@ $(document).ready(function(){
         $('#mfacil_fundo').after(html_form_mfacil);
         if (mf_respostas == 'checked') $('#respostas_prontas').attr('style', 'display: block;');
     }
-    //injeta css da div de configuração das respostas
-    $("head").append("<style type='text/css'>#div_mfacil{box-shadow: 0 3px 14px #333; border-radius: 5px; display:block;position:absolute;top:400px;left:50%;margin-left:-300px;margin-top:-300px;padding:10px;width:650px;border:0px solid #000;z-index:100;}</style>");
+
     $(document).on('click', '#mfacil_config', function(){ //quando for clicado no menu de config das respostas
         mfacil_config();
     });
@@ -264,6 +305,13 @@ $(document).ready(function(){
             mfacil_pagamento = "";
         }
         GM_setValue ("mercadoFacil_pagamento", mfacil_pagamento);
+
+        if ($("#mfacil_chat").is(":checked") == true){
+            mfacil_chat = "checked";
+        } else {
+            mfacil_chat = "";
+        }
+        GM_setValue ("mercadoFacil_chat", mfacil_chat);
 
         if ($("#mfacil_respostas").is(":checked") == true){
             mfacil_respostas = "checked";
