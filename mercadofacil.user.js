@@ -11,7 +11,6 @@
 // @require	http://ideias.2p.fm/js/jquery-simple-context-menu/jquery.contextmenu.js
 // @match	http://*.mercadolivre.com.br/*
 // @match	https://*.mercadolivre.com.br/*
-// @match	https://chat.mercadolivre.com.br/*
 // @grant GM_getValue
 // @grant GM_setValue
 // @grant GM_log
