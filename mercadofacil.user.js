@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.43
+// @version	0.44
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -21,11 +21,12 @@
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.43';
+    version = '0.44';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
     $('#CONFIG').after(mfacil_button);
+    if (debug == 1) GM_log("Link do MercadoFacil injetado"); //debug
 
     //Classe para a div de configuração e changelog
     $("head").append("<style type='text/css'>#div_mfacil{box-shadow: 0 3px 14px #333; border-radius: 5px; display:block;position:absolute;top:400px;left:50%;margin-left:-300px;margin-top:-300px;padding:10px;width:750px;border:0px solid #000;z-index:100;}</style>");
@@ -57,11 +58,15 @@ $(document).ready(function(){
     mf_textarea = GM_getValue("mercadoFacil_textarea"); if (mf_textarea == null) mf_textarea = '560';
 
     //Se for a primeira vez que o script é carregado exibe Div de configuração
-    if (mf_first_install != "instalado") mfacil_config();
+    if (mf_first_install != "instalado"){
+        mfacil_config();
+        if (debug == 1) GM_log("Primeira instalação!"); //debug
+    }
     //Se for a primeira vez que o script é carregado exibe Div de configuração
 
     // se o MercadoFacil foi atualizado exibe o Changelog //
-    if ( version != mf_version){
+    if (version != mf_version && mf_first_install == "instalado"){
+        if (debug == 1) GM_log("MercadoFacil foi atualizado, exibe o Changelog"); //debug
         GM_xmlhttpRequest({
             method: "GET",
             url: "https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/changelog.html",
@@ -148,6 +153,36 @@ $(document).ready(function(){
     }
     //VERIFICAÇÃO DE PAGAMENTO LIBERADO //
 
+    // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
+    function insertChatResumo(){
+        setTimeout(function(){
+            if (GM_getValue("mercadoFacil_userName") == null){
+                //captura username e armazena
+                user_name = $('#nickName').html();
+                GM_setValue ("mercadoFacil_userName", user_name);
+                //capturar user_id e armazena
+                $.getJSON('https://api.mercadolibre.com/sites/MLB/search?nickname=' + user_name + '#json', function(jd) {
+                    user_id = (jd.seller.id);
+                    GM_setValue ("mercadoFacil_userID", user_id);
+                });
+                location.reload();
+            }else{
+                // mostra o link para o chat
+                if (debug == 1) GM_log('Link de Chat injetado'); //debug
+                user_name = GM_getValue("mercadoFacil_userName");
+                user_id = GM_getValue("mercadoFacil_userID");
+                chat_button = '<div id="chat_container" class="chat-container"> <a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null"><span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;"> Iniciar chat </span></a><script type="text/javascript">function runChat() {if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\';var winName = \'Chat\';var winURL = \'https://chat.mercadolivre.com.br/\';window.chatWindow=window.open(\'about:blank\',winName,winOpts);var webchatForm = document.createElement(\'form\');webchatForm.setAttribute(\'action\', winURL);webchatForm.style.display=\'none\';webchatForm.setAttribute(\'target\',winName);webchatForm.setAttribute(\'method\',\'post\');var e = document.createElement(\'input\');e.setAttribute(\'name\',\'userData\');e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":"","available_place_in_queue":"","allow_render":true,"user":{"user_id":"'+user_id+'","nickname":"'+user_name+'","first_name":"'+user_name+'","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","segment":"LONG_TAIL","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"group":"ML_PORTAL_HOME","idx":2,"article_number":"","articleDescription":"HomeNewPortal","sf":{"from_nw_mlportal__c":true},"lang":"pt_BR"}));webchatForm.appendChild(e);document.body.appendChild(webchatForm);webchatForm.submit();setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000);}window.chatWindow.focus();}</script></div>';
+                $('#chat_container').remove(); //remove a div do chat
+                $('.myml-title').after(chat_button); //insere a div do chat com a função de chamada
+            }
+        },2500)
+    }
+    // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
+
+    //  PAGINA DE REUSMO //
+    if ( location.href.search('/summary') >= 1 && mf_chat == 'checked' ) insertChatResumo();
+    //  PAGINA DE REUSMO //
+	
     //  PAGINA DE AJUDA E CONTATO //
     if (location.href == 'http://contato.mercadolivre.com.br/ajuda' && mf_chat == 'checked'){
         // testa para saber se ja foi registrado o userName do usuário
@@ -173,10 +208,6 @@ $(document).ready(function(){
     }
     //  PAGINA DE AJUDA E CONTATO //
 
-    //  PAGINA DE REUSMO //
-    if ( location.href.search('/summary') >= 1 && mf_chat == 'checked' ) insertChatResumo();
-    //  PAGINA DE REUSMO //
-
     // NO CHAT //
     if (location.href == 'https://chat.mercadolivre.com.br/'){
         //$("h3").before("<span> (Autoreload)</span>"); //insere titulo
@@ -188,19 +219,6 @@ $(document).ready(function(){
         },mf_delay_chat);
     }
     // NO CHAT //
-
-    // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
-    function insertChatResumo(){
-        //Link de chat na página de Resumo
-        user_name = $('#nickName').html(); //capturar nome de usuario
-        user_id = userId; //capturar id do usuario
-
-        chat_button = '<div id="chat_container" class="chat-container"> <a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null"><span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;"> Iniciar chat </span></a><script type="text/javascript">function runChat() {if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\';var winName = \'Chat\';var winURL = \'https://chat.mercadolivre.com.br/\';window.chatWindow=window.open(\'about:blank\',winName,winOpts);var webchatForm = document.createElement(\'form\');webchatForm.setAttribute(\'action\', winURL);webchatForm.style.display=\'none\';webchatForm.setAttribute(\'target\',winName);webchatForm.setAttribute(\'method\',\'post\');var e = document.createElement(\'input\');e.setAttribute(\'name\',\'userData\');e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":"","available_place_in_queue":"","allow_render":true,"user":{"user_id":"'+user_id+'","nickname":"'+user_name+'","first_name":"'+user_name+'","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","segment":"LONG_TAIL","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"group":"ML_PORTAL_HOME","idx":2,"article_number":"","articleDescription":"HomeNewPortal","sf":{"from_nw_mlportal__c":true},"lang":"pt_BR"}));webchatForm.appendChild(e);document.body.appendChild(webchatForm);webchatForm.submit();setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000);}window.chatWindow.focus();}</script></div>';
-        $('#chat_container').remove(); //remove a div do chat
-        $('.myml-title').after(chat_button); //insere a div do chat com a função de chamada
-    }
-    // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
-
 
     // FUNÇÃO QUE RETORNA O CUMPRIMENTO DE ACORDO COM O HORÁRIO //
     data = new Date();
@@ -412,29 +430,29 @@ $(document).ready(function(){
                         }
                         },
                     ]
-                        })
-                        //Injeta o attributo mf_context nas textarea para não injetar o menu de contexto novamente
-                        $('textarea').attr('mf_context', 1);
-                        }
+                })
+                //Injeta o attributo mf_context nas textarea para não injetar o menu de contexto novamente
+                $('textarea').attr('mf_context', 1);
+            }
 
-                        function loop_respostas_prontas(){
-                        setTimeout(function(){
-                        if (debug == 1) GM_log('loop respostas prontas'); //debug
-                        respostas_prontas();
-                        loop_respostas_prontas();
-                        },3500)
-                        }
+            function loop_respostas_prontas(){
+                setTimeout(function(){
+                    if (debug == 1) GM_log('loop respostas prontas'); //debug
+                    respostas_prontas();
+                    loop_respostas_prontas();
+                },3500)
+            }
 
-                        //Injeta classe CSS do jQuery Context Menu
-                        cssdata = " .contextMenuPlugin {   -webkit-user-select: none;   display: none;   font-family: tahoma, arial, sans-serif;   font-size: 11px;   position: absolute;   left: 100px;   top: 100px;   min-width: 100px;   list-style-type: none;   margin: 0;   padding: 0;   background-color: #f7f3f7;   border: 2px solid #f7f7f7;   outline: 1px solid #949694; }  .contextMenuPlugin > li {   margin: 0 0 0 0;   padding: 1px;   background-repeat: no-repeat; }  .contextMenuPlugin > li > a {   position: relative;   display: block;   padding: 3px 3px 3px 28px;   color: ButtonText;   text-decoration: none;   margin: 1px; }  .contextMenuPlugin > li > a img {   position: absolute;   left: 3px;   margin-top: -2px;   width: 16px;   height: 16px; } .contextMenuPlugin > li > a:hover {   border: 1px solid #fffbff;   outline: 1px solid #b5d3ff;   margin: 0;   background: -moz-linear-gradient(top, rgba(239,239,255,0.5) 0%, rgba(223,223,255,0.5) 100%); /* FF3.6+ */   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(239,239,255,0.5)), color-stop(100%,rgba(223,223,255,0.5))); /* Chrome,Safari4+ */   background: -webkit-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* Chrome10+,Safari5.1+ */   background: -o-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* Opera11.10+ */   background: -ms-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* IE10+ */   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80efefff', endColorstr='#80dfdfff',GradientType=0 ); /* IE6-9 */   background: linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* W3C */   cursor: default; }  .contextMenuPlugin > li.disabled {   pointer-events: none; }  .contextMenuPlugin > li.disabled a {   color: grey; }  .contextMenuPlugin > li.disabled > a:hover {   border: none;   outline: none; }  .contextMenuPlugin > li.divider {   border-top: 1px solid #e7e3e7;   border-bottom: 1px solid #ffffff;   height: 0;   padding: 0;   margin: 5px 0 5px 27px; }  .contextMenuPlugin > .header {   background: rgb(90,90,90); /* Old browsers */   background: -moz-linear-gradient(top, rgba(90,90,90,1) 0%, rgba(20,20,20,1) 100%); /* FF3.6+ */   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(90,90,90,1)), color-stop(100%,rgba(20,20,20,1))); /* Chrome,Safari4+ */   background: -webkit-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* Chrome10+,Safari5.1+ */   background: -o-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* Opera11.10+ */   background: -ms-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* IE10+ */   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a5a5a', endColorstr='#141414',GradientType=0 ); /* IE6-9 */   background: linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* W3C */   position: relative;   cursor: default;   padding: 3px 3px 3px 3px;   color: #ffffff; }  .contextMenuPlugin > .gutterLine {   position: absolute;   border-left: 1px solid #e7e3e7;   border-right: 1px solid #ffffff;   width: 0;   top: 0;   bottom: 0;   left: 26px;   z-index: 0; } ";
-                        $("head").append("<style type='text/css'>"+cssdata+"</style>");
-                        loop_respostas_prontas();
+            //Injeta classe CSS do jQuery Context Menu
+            cssdata = " .contextMenuPlugin {   -webkit-user-select: none;   display: none;   font-family: tahoma, arial, sans-serif;   font-size: 11px;   position: absolute;   left: 100px;   top: 100px;   min-width: 100px;   list-style-type: none;   margin: 0;   padding: 0;   background-color: #f7f3f7;   border: 2px solid #f7f7f7;   outline: 1px solid #949694; }  .contextMenuPlugin > li {   margin: 0 0 0 0;   padding: 1px;   background-repeat: no-repeat; }  .contextMenuPlugin > li > a {   position: relative;   display: block;   padding: 3px 3px 3px 28px;   color: ButtonText;   text-decoration: none;   margin: 1px; }  .contextMenuPlugin > li > a img {   position: absolute;   left: 3px;   margin-top: -2px;   width: 16px;   height: 16px; } .contextMenuPlugin > li > a:hover {   border: 1px solid #fffbff;   outline: 1px solid #b5d3ff;   margin: 0;   background: -moz-linear-gradient(top, rgba(239,239,255,0.5) 0%, rgba(223,223,255,0.5) 100%); /* FF3.6+ */   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(239,239,255,0.5)), color-stop(100%,rgba(223,223,255,0.5))); /* Chrome,Safari4+ */   background: -webkit-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* Chrome10+,Safari5.1+ */   background: -o-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* Opera11.10+ */   background: -ms-linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* IE10+ */   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80efefff', endColorstr='#80dfdfff',GradientType=0 ); /* IE6-9 */   background: linear-gradient(top, rgba(239,239,255,0.5) 0%,rgba(223,223,255,0.5) 100%); /* W3C */   cursor: default; }  .contextMenuPlugin > li.disabled {   pointer-events: none; }  .contextMenuPlugin > li.disabled a {   color: grey; }  .contextMenuPlugin > li.disabled > a:hover {   border: none;   outline: none; }  .contextMenuPlugin > li.divider {   border-top: 1px solid #e7e3e7;   border-bottom: 1px solid #ffffff;   height: 0;   padding: 0;   margin: 5px 0 5px 27px; }  .contextMenuPlugin > .header {   background: rgb(90,90,90); /* Old browsers */   background: -moz-linear-gradient(top, rgba(90,90,90,1) 0%, rgba(20,20,20,1) 100%); /* FF3.6+ */   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(90,90,90,1)), color-stop(100%,rgba(20,20,20,1))); /* Chrome,Safari4+ */   background: -webkit-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* Chrome10+,Safari5.1+ */   background: -o-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* Opera11.10+ */   background: -ms-linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* IE10+ */   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a5a5a', endColorstr='#141414',GradientType=0 ); /* IE6-9 */   background: linear-gradient(top, rgba(90,90,90,1) 0%,rgba(20,20,20,1) 100%); /* W3C */   position: relative;   cursor: default;   padding: 3px 3px 3px 3px;   color: #ffffff; }  .contextMenuPlugin > .gutterLine {   position: absolute;   border-left: 1px solid #e7e3e7;   border-right: 1px solid #ffffff;   width: 0;   top: 0;   bottom: 0;   left: 26px;   z-index: 0; } ";
+            $("head").append("<style type='text/css'>"+cssdata+"</style>");
+            loop_respostas_prontas();
 
-                        }
-                        /******************** MENU DE CONTEXTO PARA RESPOSTAS PREDEFINIDAS ********************/
-                        }
+        }
+        /******************** MENU DE CONTEXTO PARA RESPOSTAS PREDEFINIDAS ********************/
+    }
 
-                        /******************** NA PAGINA DE PERGUNTAS ********************/
+    /******************** NA PAGINA DE PERGUNTAS ********************/
 
 
-                        })
+})
