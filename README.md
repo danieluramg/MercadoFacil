@@ -4,7 +4,7 @@
 - Desenvolvido por: Daniel Plácido (daniel.uramg@gmail.com)
 - Colaborador: Marco Silveira (vastar@globo.com)
 
-**Se esta ferramenta tem te ajudado considere fazer uma doação:** [https://goo.gl/gRlz5t](https://goo.gl/gRlz5t)
+**Se esta ferramenta tem te ajudado considere fazer uma doação:** [http://mpago.la/gV0b)
 
 ## Instalação:
 - Primeiro instale o complemento Tampermonkey no Google Chrome: [https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)
