@@ -4,7 +4,15 @@
 - Desenvolvido por: Daniel Plácido (daniel.uramg@gmail.com)
 - Colaborador: Marco Silveira (vastar@globo.com)
 
-**Se esta ferramenta tem te ajudado considere fazer uma doação:** [http://mpago.la/gV0b)
+**Se esta ferramenta tem te ajudado considere fazer uma doação:**
+<!-- INICIO FORMULARIO BOTAO PAGSEGURO -->
+<form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
+<!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO -->
+<input type="hidden" name="currency" value="BRL" />
+<input type="hidden" name="receiverEmail" value="daniel.uramg@gmail.com" />
+<input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/120x53-doar-laranja.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
+</form>
+<!-- FINAL FORMULARIO BOTAO PAGSEGURO -->
 
 ## Instalação:
 - Primeiro instale o complemento Tampermonkey no Google Chrome: [https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)
