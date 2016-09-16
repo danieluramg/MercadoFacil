@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.45
+// @version	0.46
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -18,6 +18,9 @@
 // @run-at	document-end
 // ==/UserScript==
 'use strict';
+/*v0.46 em 08/01
+adicionada nova frase de desculpa do chat pra ficar reiniciando
+*/
 
 debug = 0; //mude para 1 para registrar os logs
 
@@ -91,7 +94,13 @@ $(document).ready(function(){
         contador_perguntas = $('.ml-count').html();
         if (contador_perguntas >= 1){
             if (debug == 1) GM_log("Tem perguntas para responder!"); //debug
-            document.getElementById("alert").innerHTML="<embed src='https://www.webtrackerencomendas.com.br/alert.mp3' hidden=true autostart=true loop=false>";
+            //document.getElementById("alert").innerHTML="<embed src='https://www.dropbox.com/l/scl/xtzKs3p0yGqAo4bhHD5qcu' hidden=true autostart=true loop=false>";
+            var player = document.createElement('audio');
+            player.src = 'https://dl.dropbox.com/s/katvxh33l60ar9u/alert.mp3';
+            player.preload = 'auto';
+            player.volume = 1.0;
+            player.controls = false;
+            player.play();
         }
     }
     function loop_perguntas(){
@@ -213,7 +222,7 @@ $(document).ready(function(){
     if (location.href == 'https://chat.mercadolivre.com.br/'){
         //$("h3").before("<span> (Autoreload)</span>"); //insere titulo
         setTimeout(function(){ //Recarregar página de chat a cada X milisegundos até aparecer alguém
-            if ( $('#user').html() == "Ops! Não tem ninguém disponível agora. Por favor, tente em alguns minutos" || $('#user').html() == "Ups...en este momento estamos trabajando para atenderte por chat. Por favor vuelve a contactarnos en unos minutos."){
+            if ( $('#user').html() == "Ops! Não tem ninguém disponível agora. Por favor, tente em alguns minutos" || $('#user').html() == "Ups...en este momento estamos trabajando para atenderte por chat. Por favor vuelve a contactarnos en unos minutos." || $('#user').html() == "Ops! Estamos trabalhando agora. Por favor, tente novamente em alguns minutos"){
                 $('<span> - (reload)</span>').appendTo('#user');
                 location.reload();
             }
