@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.46
+// @version	0.47
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -15,17 +15,15 @@
 // @grant GM_getValue
 // @grant GM_setValue
 // @grant GM_log
+// @grant GM_notification
+// @grant window.focus
 // @run-at	document-end
 // ==/UserScript==
-'use strict';
-/*v0.46 em 08/01
-adicionada nova frase de desculpa do chat pra ficar reiniciando
-*/
 
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.44';
+    version = '0.47';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
@@ -90,10 +88,18 @@ $(document).ready(function(){
     // se o MercadoFacil foi atualizado exibe o Changelog //
 
     // VERIFICA PERGUNTAS PENDENTES //
+    var alertHtml5 = {
+        title: 'MercadoFácil',
+        text: 'Você tem perguntas para responder!',
+        image: 'http://www.vipcomsistemas.com.br/wp-content/uploads/2015/07/script-mercado-livre.jpg',
+        timeout: 10000,
+        onclick: function() { window.focus(); },
+    };
     function verifica_perguntas(){
         contador_perguntas = $('.ml-count').html();
         if (contador_perguntas >= 1){
             if (debug == 1) GM_log("Tem perguntas para responder!"); //debug
+            GM_notification(alertHtml5);
             //document.getElementById("alert").innerHTML="<embed src='https://www.dropbox.com/l/scl/xtzKs3p0yGqAo4bhHD5qcu' hidden=true autostart=true loop=false>";
             var player = document.createElement('audio');
             player.src = 'https://dl.dropbox.com/s/katvxh33l60ar9u/alert.mp3';
