@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.47
+// @version	0.48
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -287,6 +287,7 @@ $(document).ready(function(){
     if (mf_banners == 'checked'){
         $('#oasTOP').remove();
         $('#oasLEFTsrc').remove();
+        $('#oas').remove();
     }
 
     // FORM DE CONFIGURAÇÃO DO MERCADOFACIL //
