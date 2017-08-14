@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.49
+// @version	0.50
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
@@ -23,7 +23,7 @@
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.49';
+    version = '0.50';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
@@ -128,7 +128,7 @@ $(document).ready(function(){
         conta_vendas = $('.myml-ui-item-container').length+1;  //conta quantas vendas tem na pagina
         for (i = 2; i <= conta_vendas; i++){
             item_lista = $('.myml-ui-item-container:nth-child('+i+')').attr('id').replace('item-container-', ''); //pega o ID da venda
-               if (debug == 1) GM_log('Verificando venda: ' + item_lista); //debug
+            if (debug == 1) GM_log('Verificando venda: ' + item_lista); //debug
             confere = $('#mf_pgto'+item_lista).length; //variavel que verifica quantos caractéres tem na DIV
 
             //verifica se existe a DIV pra injetar a informação, se existir é porque já foi inserira e não executa novamenete
@@ -285,9 +285,11 @@ $(document).ready(function(){
 
     //remove banners de publicidade da página de gerenciamento de vendas, resumo, etc
     if (mf_banners == 'checked'){
-        $('#oasTOP').remove();
-        $('#oasLEFTsrc').remove();
-        $('#oas').remove();
+        setTimeout(function(){
+            $('aside').remove()
+            $('#oasLEFTsrc').remove();
+            $('#oas').remove();
+        },3500)
     }
 
     // FORM DE CONFIGURAÇÃO DO MERCADOFACIL //
