@@ -4,11 +4,11 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.50
+// @version	0.51
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
-// @require	http://ideias.2p.fm/userscripts/jquery-2.1.1.min.js
-// @require	http://ideias.2p.fm/js/jquery-simple-context-menu/jquery.contextmenu.js
+// @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
+// @require	https://www.ideias.pw/js/jquery-simple-context-menu/jquery.contextmenu.js
 // @match	http://*.mercadolivre.com.br/*
 // @match	https://*.mercadolivre.com.br/*
 // @grant GM_xmlhttpRequest
@@ -23,7 +23,7 @@
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.50';
+    version = '0.51';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
@@ -91,22 +91,16 @@ $(document).ready(function(){
     var alertHtml5 = {
         title: 'MercadoFácil',
         text: 'Você tem perguntas para responder!',
-        image: 'http://www.vipcomsistemas.com.br/wp-content/uploads/2015/07/script-mercado-livre.jpg',
+        image: 'https://www.ideias.pw/logo-ml.jpg',
         timeout: 10000,
         onclick: function() { window.focus(); },
     };
     function verifica_perguntas(){
         contador_perguntas = $('.ml-count').html();
-        if (contador_perguntas >= 1){
+        if (contador_perguntas >= 1 && location.host == "questions.mercadolivre.com.br"){
             if (debug == 1) GM_log("Tem perguntas para responder!"); //debug
             GM_notification(alertHtml5);
-            //document.getElementById("alert").innerHTML="<embed src='https://www.dropbox.com/l/scl/xtzKs3p0yGqAo4bhHD5qcu' hidden=true autostart=true loop=false>";
-            var player = document.createElement('audio');
-            player.src = 'https://dl.dropbox.com/s/katvxh33l60ar9u/alert.mp3';
-            player.preload = 'auto';
-            player.volume = 1.0;
-            player.controls = false;
-            player.play();
+            document.getElementById("alert").innerHTML="<embed src='https://www.ideias.pw/alert.mp3' hidden=true autostart=true loop=false>";
         }
     }
     function loop_perguntas(){
@@ -191,7 +185,7 @@ $(document).ready(function(){
                 $('#chat_container').remove(); //remove a div do chat
                 $('.myml-title').after(chat_button); //insere a div do chat com a função de chamada
             }
-        },2500)
+        },2500);
     }
     // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
 
@@ -274,7 +268,7 @@ $(document).ready(function(){
                 $('#' + id_venda).click();
             }
         }
-    })    
+    });
     //FUNÇÃO PARA MARCAR AS COMPRAS DE QUEM QUALIFICOU POSITIVO //
 
     //aumentar area de texto da criação de anuncios, delay de 5 segundos pra carregar o frame
@@ -286,10 +280,10 @@ $(document).ready(function(){
     //remove banners de publicidade da página de gerenciamento de vendas, resumo, etc
     if (mf_banners == 'checked'){
         setTimeout(function(){
-            $('aside').remove()
-            $('#oasLEFTsrc').remove();
-            $('#oas').remove();
-        },3500)
+            $('#oas').remove(); //banner lateral da págida ne resumo
+            $('#oasTOP').remove(); //banner no topo da págida ne vendas
+            $('.banner-container').remove(); //banner no topo na página de buscas
+        },3000)
     }
 
     // FORM DE CONFIGURAÇÃO DO MERCADOFACIL //
