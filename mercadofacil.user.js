@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.51
+// @version	0.52
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
@@ -100,6 +100,13 @@ $(document).ready(function(){
         if (contador_perguntas >= 1 && location.host == "questions.mercadolivre.com.br"){
             if (debug == 1) GM_log("Tem perguntas para responder!"); //debug
             GM_notification(alertHtml5);
+            //document.getElementById("alert").innerHTML="<embed src='https://www.ideias.pw/alert.mp3' hidden=true autostart=true loop=false>";
+            var player = document.createElement('audio');
+            player.src = 'https://www.ideias.pw/alert.mp3';
+            player.preload = 'auto';
+            player.volume = 1.0;
+            player.controls = false;
+            player.play();
             document.getElementById("alert").innerHTML="<embed src='https://www.ideias.pw/alert.mp3' hidden=true autostart=true loop=false>";
         }
     }
@@ -281,6 +288,7 @@ $(document).ready(function(){
     if (mf_banners == 'checked'){
         setTimeout(function(){
             $('#oas').remove(); //banner lateral da págida ne resumo
+            $('#oasLEFT').remove();  //banner lateral da págida ne resumo
             $('#oasTOP').remove(); //banner no topo da págida ne vendas
             $('.banner-container').remove(); //banner no topo na página de buscas
         },3000)
