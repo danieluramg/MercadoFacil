@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.52
+// @version	0.53
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
@@ -23,7 +23,7 @@
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.51';
+    version = '0.53';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
@@ -55,8 +55,6 @@ $(document).ready(function(){
     mf_perguntas = GM_getValue("mercadoFacil_perguntas");
     mf_banners = GM_getValue("mercadoFacil_banners");
     mf_pagamento = GM_getValue("mercadoFacil_pagamento");
-    mf_chat = GM_getValue("mercadoFacil_chat");
-    mf_delay_chat = GM_getValue("mercadoFacil_delay_chat"); if (mf_delay_chat == null) mf_delay_chat = '1000';
     mf_textarea = GM_getValue("mercadoFacil_textarea"); if (mf_textarea == null) mf_textarea = '560';
 
     //Se for a primeira vez que o script é carregado exibe Div de configuração
@@ -128,14 +126,16 @@ $(document).ready(function(){
         if (debug == 1) GM_log('Verificando pagamentos...'); //debug
         conta_vendas = $('.myml-ui-item-container').length+1;  //conta quantas vendas tem na pagina
         for (i = 2; i <= conta_vendas; i++){
-            item_lista = $('.myml-ui-item-container:nth-child('+i+')').attr('id').replace('item-container-', ''); //pega o ID da venda
+            //item_lista = $('.myml-ui-item-container:nth-child('+i+')').attr('id').replace('item-container-', ''); //pega o ID da venda
+            item_lista = $('input', $('.myml-ui-item-container:nth-child('+i+')')).attr('data-order-id');
             if (debug == 1) GM_log('Verificando venda: ' + item_lista); //debug
             confere = $('#mf_pgto'+item_lista).length; //variavel que verifica quantos caractéres tem na DIV
 
             //verifica se existe a DIV pra injetar a informação, se existir é porque já foi inserira e não executa novamenete
             if(  confere <= 0 ){
                 //$('#noteRow'+item_lista).before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
-                $('div[data-note-id='+item_lista+']').before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
+                //$('div[data-note-id='+item_lista+']').before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
+                $('input[data-order-id='+item_lista+']').before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
                 carregar_pagamento(item_lista);
             }
         }
@@ -169,73 +169,6 @@ $(document).ready(function(){
         loop_pagamento();
     }
     //VERIFICAÇÃO DE PAGAMENTO LIBERADO //
-
-    // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
-    function insertChatResumo(){
-        setTimeout(function(){
-            if (GM_getValue("mercadoFacil_userName") == null){
-                //captura username e armazena
-                user_name = $('#nickName').html();
-                GM_setValue ("mercadoFacil_userName", user_name);
-                //capturar user_id e armazena
-                $.getJSON('https://api.mercadolibre.com/sites/MLB/search?nickname=' + user_name + '#json', function(jd) {
-                    user_id = (jd.seller.id);
-                    GM_setValue ("mercadoFacil_userID", user_id);
-                });
-                location.reload();
-            }else{
-                // mostra o link para o chat
-                if (debug == 1) GM_log('Link de Chat injetado'); //debug
-                user_name = GM_getValue("mercadoFacil_userName");
-                user_id = GM_getValue("mercadoFacil_userID");
-                chat_button = '<div id="chat_container" class="chat-container"> <a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null"><span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;"> Iniciar chat </span></a><script type="text/javascript">function runChat() {if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\';var winName = \'Chat\';var winURL = \'https://chat.mercadolivre.com.br/\';window.chatWindow=window.open(\'about:blank\',winName,winOpts);var webchatForm = document.createElement(\'form\');webchatForm.setAttribute(\'action\', winURL);webchatForm.style.display=\'none\';webchatForm.setAttribute(\'target\',winName);webchatForm.setAttribute(\'method\',\'post\');var e = document.createElement(\'input\');e.setAttribute(\'name\',\'userData\');e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":"","available_place_in_queue":"","allow_render":true,"user":{"user_id":"'+user_id+'","nickname":"'+user_name+'","first_name":"'+user_name+'","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","segment":"LONG_TAIL","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"group":"ML_PORTAL_HOME","idx":2,"article_number":"","articleDescription":"HomeNewPortal","sf":{"from_nw_mlportal__c":true},"lang":"pt_BR"}));webchatForm.appendChild(e);document.body.appendChild(webchatForm);webchatForm.submit();setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000);}window.chatWindow.focus();}</script></div>';
-                $('#chat_container').remove(); //remove a div do chat
-                $('.myml-title').after(chat_button); //insere a div do chat com a função de chamada
-            }
-        },2500);
-    }
-    // FUNÇÃO PARA INSERIR CHAT NA PAGINA DE RESUMO E ARMAZENAR ID DO USUARIO PARA CHAT NA PAGINA DE CONTATO //
-
-    //  PAGINA DE REUSMO //
-    if ( location.href.search('/summary') >= 1 && mf_chat == 'checked' ) insertChatResumo();
-    //  PAGINA DE REUSMO //
-
-    //  PAGINA DE AJUDA E CONTATO //
-    if (location.href == 'http://contato.mercadolivre.com.br/ajuda' && mf_chat == 'checked'){
-        // testa para saber se ja foi registrado o userName do usuário
-        if (GM_getValue("mercadoFacil_userName") == null){
-
-            //captura username e armazena
-            user_name = $('label[for="nav-header-user-switch"]').html().replace('<!--[if lt IE 9]><a href="https://myaccount.mercadolivre.com.br/summary/" rel="nofollow"><![endif]-->', '').replace('<!--[if lt IE 9]></a><![endif]-->', '').replace(' <i class="nav-icon-user"></i>', '').replace(/^\s+|\s+$/g,"");
-            GM_setValue ("mercadoFacil_userName", user_name);
-            //capturar user_id e armazena
-            $.getJSON('https://api.mercadolibre.com/sites/MLB/search?nickname=' + user_name + '#json', function(jd) {
-                user_id = (jd.seller.id);
-                GM_setValue ("mercadoFacil_userID", user_id);
-            });
-            location.reload();
-
-        }else{
-            // mostra o link para o chat
-            user_name = GM_getValue("mercadoFacil_userName");
-            user_id = GM_getValue("mercadoFacil_userID");
-            chat_call_button = '<p style="font-size:20px"><a id="null" href="javascript://chat" onclick="runChat();return false;" class="null" style="null">Iniciar o chat com um representante</a><script type="text/javascript">function runChat() {if (typeof (window.chatWindow) == \'undefined\' || window.chatWindow.closed){var winOpts = \'directories=no,titlebar=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=633,height=550\';var winName = \'Chat\';var winURL = \'https://chat.mercadolivre.com.br/\';window.chatWindow=window.open(\'about:blank\',winName,winOpts);var webchatForm = document.createElement(\'form\');webchatForm.setAttribute(\'action\', winURL);webchatForm.style.display=\'none\';webchatForm.setAttribute(\'target\',winName);webchatForm.setAttribute(\'method\',\'post\');var e = document.createElement(\'input\');e.setAttribute(\'name\',\'userData\');e.setAttribute(\'value\',JSON.stringify({"validate":true,"render":true,"agents_online":true,"available_agents":"","available_place_in_queue":"","allow_render":true,"user":{"user_id":"'+user_id+'","nickname":"'+user_name+'","first_name":"'+user_name+'","last_name":"","site":"MLB","user_type":"MERCADO_LIDER","segment":"LONG_TAIL","queue_id":"MEJORES_VENDEDORES_MLB"},"from_plugin":true,"group":"ML_PORTAL_HOME","idx":2,"article_number":"","articleDescription":"HomeNewPortal","sf":{"from_nw_mlportal__c":true},"lang":"pt_BR"}));webchatForm.appendChild(e);document.body.appendChild(webchatForm);webchatForm.submit();setTimeout(function(){webchatForm.parentNode.removeChild(webchatForm);},1000);}window.chatWindow.focus();}</script></p>';
-            $('.secondary-content').before(chat_call_button);
-        }
-    }
-    //  PAGINA DE AJUDA E CONTATO //
-
-    // NO CHAT //
-    if (location.href == 'https://chat.mercadolivre.com.br/'){
-        //$("h3").before("<span> (Autoreload)</span>"); //insere titulo
-        setTimeout(function(){ //Recarregar página de chat a cada X milisegundos até aparecer alguém
-            if ( $('#user').html() == "Ops! Não tem ninguém disponível agora. Por favor, tente em alguns minutos" || $('#user').html() == "Ups...en este momento estamos trabajando para atenderte por chat. Por favor vuelve a contactarnos en unos minutos." || $('#user').html() == "Ops! Estamos trabalhando agora. Por favor, tente novamente em alguns minutos"){
-                $('<span> - (reload)</span>').appendTo('#user');
-                location.reload();
-            }
-        },mf_delay_chat);
-    }
-    // NO CHAT //
 
     // FUNÇÃO QUE RETORNA O CUMPRIMENTO DE ACORDO COM O HORÁRIO //
     data = new Date();
@@ -291,14 +224,14 @@ $(document).ready(function(){
             $('#oasLEFT').remove();  //banner lateral da págida ne resumo
             $('#oasTOP').remove(); //banner no topo da págida ne vendas
             $('.banner-container').remove(); //banner no topo na página de buscas
-        },3000)
+        },3000);
     }
 
     // FORM DE CONFIGURAÇÃO DO MERCADOFACIL //
     function mfacil_config(){
         //injeta mascara de fundo e div com o formulário
         $('body').append(div_mfacil_fundo);
-        html_form_mfacil = '<a href="https://github.com/danieluramg/MercadoFacil/blob/master/README.md" target="_blank"><h1 class="main-title title title--primary">MercadoFacil</h1></a><hr>   <input type="hidden" id="mfacil_first_install" value="instalado">         <table>     <tbody>       <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário">         <td>Ativar/Desativar cumprimento automático</td>         <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td>       </tr>       <tr title="Remover banners de publicidade da página de Resumo">         <td>Remover banners de publicidade da página de Resumo </td>         <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td>       </tr>       <tr title="Exibe a situação de cada pagamento na página de Vendas Abertas ou Encerradas">         <td>Ativar/Desativar verificação de pagamento liberado</td>         <td> &nbsp;<input type="checkbox" id="mfacil_pagamento" ' + mf_pagamento + '></td>       </tr>       <tr title="Exibe link para o Chat na página de Resumo e Contato">         <td>Ativar/Desativar Chat</td>         <td> &nbsp;<input type="checkbox" id="mfacil_chat" ' + mf_chat + '></td>       </tr>       <tr title="Tempo em Milisegundos para o chat ser atualizdo automaticamente quando não tiver atendente disponível">         <td>Tempo para atualizar o Chat</td>         <td> &nbsp;<input type="text" id="mfacil_delay_chat" value="' + mf_delay_chat + '" size="5"> ms (padrão 1000ms {1 segundo})</td>       </tr>       <tr title="Ajusta a altura da Textarea de criação de anuncios">         <td>Altura da Textarea de criação de anúncios</td>         <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td>       </tr>       <tr title="Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar toca um som de alerta">         <td>Ativar/Desativar verificação de perguntas pendentes</td>         <td> &nbsp;<input type="checkbox" id="mfacil_perguntas" ' + mf_perguntas + '></td>       </tr>       <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático">         <td>Ativar/Desativar Respostas prontas</td>         <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td>       </tr>     </tbody>   </table>   <div id="respostas_prontas" style="display: none;">     <table>       <thead>         <tr>           <th>Título</th>           <th>Resposta</th>         </tr>       </thead>       <tbody>         <tr>           <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td>         </tr>       </tbody>     </table>   </div>   <button id="mfacil_salvar" class="ch-btn">Salvar</button>     <center>     <h2>Esta ferramenta tem sido útil pra você? Considere uma doação!</h2>     <table>       <tr>         <td> <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post"> <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> <input type="hidden" name="currency" value="BRL" /> <input type="hidden" name="receiverEmail" value="daniel.uramg@gmail.com" /> <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/120x53-doar-laranja.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /> </form> <!-- FINAL FORMULARIO BOTAO PAGSEGURO --></td>         </tr>     </table>   </center> </div>';
+        html_form_mfacil = '<a href="https://github.com/danieluramg/MercadoFacil/blob/master/README.md" target="_blank"><h1 class="main-title title title--primary">MercadoFacil</h1></a><hr>   <input type="hidden" id="mfacil_first_install" value="instalado">         <table>     <tbody>       <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário">         <td>Ativar/Desativar cumprimento automático</td>         <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td>       </tr>       <tr title="Remover banners de publicidade da página de Resumo">         <td>Remover banners de publicidade da página de Resumo </td>         <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td>       </tr>       <tr title="Exibe a situação de cada pagamento na página de Vendas Abertas ou Encerradas">         <td>Ativar/Desativar verificação de pagamento liberado</td>         <td> &nbsp;<input type="checkbox" id="mfacil_pagamento" ' + mf_pagamento + '></td>       </tr>       <tr title="Ajusta a altura da Textarea de criação de anuncios">         <td>Altura da Textarea de criação de anúncios</td>         <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td>       </tr>       <tr title="Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar toca um som de alerta">         <td>Ativar/Desativar verificação de perguntas pendentes</td>         <td> &nbsp;<input type="checkbox" id="mfacil_perguntas" ' + mf_perguntas + '></td>       </tr>       <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático">         <td>Ativar/Desativar Respostas prontas</td>         <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td>       </tr>     </tbody>   </table>   <div id="respostas_prontas" style="display: none;">     <table>       <thead>         <tr>           <th>Título</th>           <th>Resposta</th>         </tr>       </thead>       <tbody>         <tr>           <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td>         </tr>       </tbody>     </table>   </div>   <button id="mfacil_salvar" class="ch-btn">Salvar</button>     <center>     <h2>Esta ferramenta tem sido útil pra você? Considere uma doação!</h2>     <table>       <tr>         <td> <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post"> <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> <input type="hidden" name="currency" value="BRL" /> <input type="hidden" name="receiverEmail" value="daniel.uramg@gmail.com" /> <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/120x53-doar-laranja.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /> </form> <!-- FINAL FORMULARIO BOTAO PAGSEGURO --></td>         </tr>     </table>   </center> </div>';
         $('#mfacil_fundo').after(div_mfacil + html_form_mfacil);
         if (mf_respostas == 'checked') $('#respostas_prontas').attr('style', 'display: block;');
     }
@@ -315,7 +248,7 @@ $(document).ready(function(){
         }else{
             $('#respostas_prontas').attr('style', 'display: none;');
         }
-    })
+    });
     // FORM DE CONFIGURAÇÃO DO MERCADOFACIL //
 
     // SALVAR FORM DO MERCADOFACIL //
@@ -332,7 +265,6 @@ $(document).ready(function(){
         GM_setValue ("mercadoFacil_r4", $('#mfacil_res4').val());
         GM_setValue ("mercadoFacil_r5", $('#mfacil_res5').val());
         GM_setValue ("mercadoFacil_r6", $('#mfacil_res6').val());
-        GM_setValue ("mercadoFacil_delay_chat", $('#mfacil_delay_chat').val());
         GM_setValue ("mercadoFacil_textarea", $('#mfacil_textarea').val());
         GM_setValue ("mercadoFacil_first_install", $('#mfacil_first_install').val());
 
@@ -357,13 +289,6 @@ $(document).ready(function(){
         }
         GM_setValue ("mercadoFacil_pagamento", mfacil_pagamento);
 
-        if ($("#mfacil_chat").is(":checked") == true){
-            mfacil_chat = "checked";
-        } else {
-            mfacil_chat = "";
-        }
-        GM_setValue ("mercadoFacil_chat", mfacil_chat);
-
         if ($("#mfacil_respostas").is(":checked") == true){
             mfacil_respostas = "checked";
         } else {
@@ -380,7 +305,7 @@ $(document).ready(function(){
 
         alert("Configurações salvas com sucesso!");
         location.reload();
-    })
+    });
     // SALVAR FORM DO MERCADOFACIL //
 
 
@@ -392,14 +317,14 @@ $(document).ready(function(){
 
         //*************** PREENCHER BOAS VINDAS NO CAMPO DE RESPONDER PERGUNTAS *****************//
         if (mf_cumprimento == 'checked'){
-            function cumprimento() {
+            function cumprimento(){
                 $('textarea').click(function(e){
                     if (debug == 1) GM_log(e.target + " clicado"); //debug
                     if (! $(e.target).attr('comp') && $(e.target).attr('name') == 'text' ){ //se existir a variaves as boas-vindas nao serao preenchidas
                         $(e.target).val(hello() + ", ");
                         $(e.target).attr('comp', '1'); //atributo para so preencher as boas vindas uma vez
                     }
-                })
+                });
             }
 
             function loop_cumprimento(){
@@ -407,7 +332,7 @@ $(document).ready(function(){
                     if (debug == 1) GM_log('loop cumprimento'); //debug
                     cumprimento();
                     loop_cumprimento();
-                },3500)
+                },3500);
             }
             loop_cumprimento();
         }
@@ -451,7 +376,7 @@ $(document).ready(function(){
                         }
                         },
                     ]
-                })
+                });
                 //Injeta o attributo mf_context nas textarea para não injetar o menu de contexto novamente
                 $('textarea').attr('mf_context', 1);
             }
@@ -461,7 +386,7 @@ $(document).ready(function(){
                     if (debug == 1) GM_log('loop respostas prontas'); //debug
                     respostas_prontas();
                     loop_respostas_prontas();
-                },3500)
+                },3500);
             }
 
             //Injeta classe CSS do jQuery Context Menu
@@ -476,4 +401,4 @@ $(document).ready(function(){
     /******************** NA PAGINA DE PERGUNTAS ********************/
 
 
-})
+});
