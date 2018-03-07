@@ -69,7 +69,7 @@ $(document).ready(function(){
         if (debug == 1) GM_log("MercadoFacil foi atualizado, exibe o Changelog"); //debug
         GM_xmlhttpRequest({
             method: "GET",
-            url: "https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/changelog.html",
+            url: "https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/changelog.html#" + version,
             //se conseguiu carregar exibe o Changelog e grava a versão para não exibir mais
             onload: function(response){
                 $('body').append(div_mfacil_fundo);
