@@ -4,7 +4,7 @@
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.53
+// @version	0.54
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
@@ -23,7 +23,7 @@
 debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.53';
+    version = '0.54';
 
     //injeta botão de configuração do MercdoFacil
     mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
@@ -149,7 +149,8 @@ $(document).ready(function(){
     }
 
     function carregar_pagamento(id_venda){
-        $('#mf_pgto'+id_venda).load('/sales/obtainOrdersData?orderId='+ id_venda + ' #textMedioPago', function(responseTxt, statusTxt, xhr){
+
+        $('#mf_pgto'+id_venda).load('/sales/'+ id_venda + '/detail .sales-payment-received__description', function(responseTxt, statusTxt, xhr){
             if(statusTxt == "success"){
                 if (debug == 1) GM_log('Informação de pagamento adicionada, venda: ' + id_venda); //debug
                 if (responseTxt.search('hoje') >= 1) pgto_hoje += 1;
