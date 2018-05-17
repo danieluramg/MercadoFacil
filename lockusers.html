@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MercadoFacil - Bloqueio de usuários do ML</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="table-responsive">
+				<h1>Usuários bloqueados</h1>
+				<br />
+				
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Localização</th>
+							<th>Registrado em</th>
+							<th>ID</th>
+							<th>REMOVER</th>
+						</tr>
+					</thead>
+					<tbody id="employeed_table">
+					</tbody>
+				</table>
+			</div>
+				<h2>Bloquear usuário</h2>
+	    <label for="uname">Digite o username: </label>
+		<input type="text" id="username" required /><button id="block">Bloquear</button>
+		</div>
+	</body>
+</html>
