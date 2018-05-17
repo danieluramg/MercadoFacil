@@ -3,7 +3,7 @@
 **Esta ferramente é em formato de UserScript (não é uma API do MercadoLivre), e é totalmente grátis e de código aberto para quem dezejar contribuir com melhorias e correções!**
 
 - Desenvolvedor: Daniel Plácido (daniel.uramg@gmail.com)
-- Agradecimento por colaborações: Marco Silveira (vastar@globo.com)
+  - Agradecimento por colaborações: Marco Silveira (vastar@globo.com)
 
 **Se esta ferramenta tem te ajudado considere fazer uma doação!**
 [Doar com PagSeguro](https://pagseguro.uol.com.br/checkout/v2/donation.html?currency=BRL&receiverEmail=daniel.uramg@gmail.com)
