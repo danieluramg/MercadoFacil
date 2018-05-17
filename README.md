@@ -2,12 +2,15 @@
 # MercadoFacil - Ferramenta para facilitar o gerenciamento das vendas no MercadoLivre
 **Esta ferramente é em formato de UserScript (não é uma API do MercadoLivre), e é totalmente grátis e de código aberto para quem desejar contribuir com melhorias e correções!**
 
-- Desenvolvedor: Daniel Plácido (daniel.uramg@gmail.com) - [www.ideias.pw](https://www.ideias.pw)
-  - Agradecimento por colaborações: Marco Silveira (vastar@globo.com)
+ - Desenvolvedor: Daniel Plácido (daniel.uramg@gmail.com) - [www.ideias.pw](https://www.ideias.pw)
+ - Agradecimento por colaborações: Marco Silveira (vastar@globo.com)
 
 **Se esta ferramenta tem te ajudado considere fazer uma doação!**
-[Doar com PagSeguro](https://pagseguro.uol.com.br/checkout/v2/donation.html?currency=BRL&receiverEmail=daniel.uramg@gmail.com)
-[Doar com MercadoPago](https://www.mercadopago.com/mlb/checkout/start?pref_id=152504742-5ace1e3c-2f5b-455f-bc11-00cff180a598)
+
+ - [Doar com
+   PagSeguro](https://pagseguro.uol.com.br/checkout/v2/donation.html?currency=BRL&receiverEmail=daniel.uramg@gmail.com)
+ - [Doar com
+   MercadoPago](https://www.mercadopago.com/mlb/checkout/start?pref_id=152504742-5ace1e3c-2f5b-455f-bc11-00cff180a598)
 
 ## Instalação:
 - Primeiro instale o complemento Tampermonkey no Google Chrome: [https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo)  
