@@ -30,10 +30,13 @@ Com esta opção ativa, o MercadoFacil vai verificar automaticamente a situaçã
 ![](https://mercadofacil.ideias.pw/imagens/pgto_bloq1.png)
 ![](https://mercadofacil.ideias.pw/imagens/pgto_bloq2.png)
 
-- Ativar/Desativar Chat (DESATIVADO);
+- Ativar/Desativar Chat (**DESATIVADO**);
  - O MercadoFacil injeta link de  Chat na página de Resumo do MercadoLivre, este link para contato direto com atendentes do ML aparece por padrão aleatoriamente (geralmente só para usuários com muitas vendas), agora sempre estará disponível!
 ![](https://mercadofacil.ideias.pw/imagens/chat.png)
-Volta e meia o MercadoLivre dava um jeito de bloquear o acesso ao chat pelo script por muita gente usar, aí até eu mesmo quando precisava não conseguia acessar. Ainda tenho script de acesso ao chat mas vendo pelo valor simbólico de R$10,00, esta pequena contribuição diminui 99% do número de usuários então o ML não fica bloqueando, e se houer bloqueio forneço um novo script à quem tiver comprado.
+Volta e meia o MercadoLivre dava um jeito de bloquear o acesso ao chat pelo script por muita gente usar, aí até eu mesmo quando precisava não conseguia acessar.
+
+Ainda tenho script de acesso ao chat mas vendo pelo valor simbólico de R$10,00, esta pequena contribuição diminui 99% do número de usuários então o ML não fica bloqueando, e se houer bloqueio forneço um novo script à quem tiver comprado.
+
 [https://www.ideias.pw/script-de-chat-de-suporte-do-mercadolivre/](https://www.ideias.pw/script-de-chat-de-suporte-do-mercadolivre/)
 
 - Altura da Textarea de criação de anúncios:
