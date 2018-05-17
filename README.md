@@ -39,7 +39,7 @@ Volta e meia o MercadoLivre dava um jeito de bloquear o acesso ao chat pelo scri
 - Altura da Textarea de criação de anúncios:
  - Particularmente acho o tamanho padrão desta área de texto muito pequena para criar anuncios, então com esta opção ajuste a seu gosto a altura da Textarea de criação de anuncios;
 ![](https://mercadofacil.ideias.pw/imagens/textarea.png)
-![](https://mercadofacil.ideias.pw/imagens/textarea2.png)
+![](https://mercadofacil.ideias.pw/imagens/textarea_depois.png)
 
 - Ativar/Desativar verificação de perguntas pendentes:
  - Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar toca um som de alerta;
@@ -53,4 +53,4 @@ respoder as perguntas:
 
 - Marcar Positivos:
  - Qualifique quem te qualificou Positivo: Acesse suas vendas Encerradas, então filtre por Estado: "Sem Qualificar" (pessoas que você não qualificou), então clique no botão "Marcar Positivos", daí clique na engrenagem e clique em Qualificar para você qualificar todos que te qualificaram Positivo!
- - ![](https://mercadofacil.ideias.pw/imagens/marcarpositivos.png)
+  ![](https://mercadofacil.ideias.pw/imagens/marcarpositivos.png)
