@@ -54,3 +54,8 @@ respoder as perguntas:
 - Marcar Positivos:
  - Qualifique quem te qualificou Positivo: Acesse suas vendas Encerradas, então filtre por Estado: "Sem Qualificar" (pessoas que você não qualificou), então clique no botão "Marcar Positivos", daí clique na engrenagem e clique em Qualificar para você qualificar todos que te qualificaram Positivo!
   ![](https://mercadofacil.ideias.pw/imagens/marcarpositivos.png)
+  
+  - Usuários Bloqueados:
+   - Acesse de maneira prática e rápida a lista com os usuários que você bloqueou para não comprarem em seus anuncios, também é possível desbloquear os usuários ou bloquear através do Username. (Esta funcionalidade requer acesso à API do MercadoLivre, portanto é preciso autorizar o uso do aplicativo na primeira vez que usar.)
+   ![](https://mercadofacil.ideias.pw/imagens/lockusers.png)
+
