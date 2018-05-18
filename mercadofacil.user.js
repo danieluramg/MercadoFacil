@@ -1,16 +1,19 @@
 // ==UserScript==
 // @name	MercadoFacil
-// @website https://github.com/danieluramg/MercadoFacil/
-// @description	Modificações na página do ML para facilitar o gerenciamento das vendas
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
-// @contributor	Marco Silveira (vastar@globo.com)
-// @version	0.54
+// @website https://www.ideias.pw/mercadofacil-scriptaplicativo-para-mercadolivre/
+// @description	Modificações na página do ML para facilitar o gerenciamento das vendas
+// @version	2.0.180518.0940
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
 // @require	https://www.ideias.pw/js/jquery-simple-context-menu/jquery.contextmenu.js
-// @match	http://*.mercadolivre.com.br/*
-// @match	https://*.mercadolivre.com.br/*
+// @require	https://www.ideias.pw/userscripts/jquery.cookie.js
+// @connect mercadofacil.ideias.pw
+// @connect raw.githubusercontent.com
+// @connect api.mercadolibre.com
+// @connect myaccount.mercadolivre.com.br
+// @match	http*://*.mercadolivre.com.br/*
 // @grant GM_xmlhttpRequest
 // @grant GM_getValue
 // @grant GM_setValue
@@ -20,13 +23,13 @@
 // @run-at	document-end
 // ==/UserScript==
 
-debug = 0; //mude para 1 para registrar os logs
+var debug = 0; //mude para 1 para registrar os logs
 
 $(document).ready(function(){
-    version = '0.54';
+    var version = '2.0.180518.0940';
 
     //injeta botão de configuração do MercdoFacil
-    mfacil_button = '<li role="presentation" class="ch-bellows"><a href="#" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</a></li>';
+    mfacil_button = '<li role="presentation" id="mfacil_button" class="ch-bellows"><span style="cursor: pointer;" id="mfacil_config" class="ch-bellows-trigger">MercadoFacil</span></li>';
     $('#CONFIG').after(mfacil_button);
     if (debug == 1) GM_log("Link do MercadoFacil injetado"); //debug
 
@@ -126,14 +129,12 @@ $(document).ready(function(){
         if (debug == 1) GM_log('Verificando pagamentos...'); //debug
         conta_vendas = $('.myml-ui-item-container').length+1;  //conta quantas vendas tem na pagina
         for (i = 2; i <= conta_vendas; i++){
-            //item_lista = $('.myml-ui-item-container:nth-child('+i+')').attr('id').replace('item-container-', ''); //pega o ID da venda
             item_lista = $('input', $('.myml-ui-item-container:nth-child('+i+')')).attr('data-order-id');
             if (debug == 1) GM_log('Verificando venda: ' + item_lista); //debug
             confere = $('#mf_pgto'+item_lista).length; //variavel que verifica quantos caractéres tem na DIV
 
             //verifica se existe a DIV pra injetar a informação, se existir é porque já foi inserira e não executa novamenete
             if(  confere <= 0 ){
-                //$('#noteRow'+item_lista).before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
                 //$('div[data-note-id='+item_lista+']').before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
                 $('input[data-order-id='+item_lista+']').before('<div id="mf_pgto' + item_lista + '"></div>'); //injeta DIV pra inserir a informação
                 carregar_pagamento(item_lista);
@@ -232,7 +233,7 @@ $(document).ready(function(){
     function mfacil_config(){
         //injeta mascara de fundo e div com o formulário
         $('body').append(div_mfacil_fundo);
-        html_form_mfacil = '<a href="https://github.com/danieluramg/MercadoFacil/blob/master/README.md" target="_blank"><h1 class="main-title title title--primary">MercadoFacil</h1></a><hr>   <input type="hidden" id="mfacil_first_install" value="instalado">         <table>     <tbody>       <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário">         <td>Ativar/Desativar cumprimento automático</td>         <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td>       </tr>       <tr title="Remover banners de publicidade da página de Resumo">         <td>Remover banners de publicidade da página de Resumo </td>         <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td>       </tr>       <tr title="Exibe a situação de cada pagamento na página de Vendas Abertas ou Encerradas">         <td>Ativar/Desativar verificação de pagamento liberado</td>         <td> &nbsp;<input type="checkbox" id="mfacil_pagamento" ' + mf_pagamento + '></td>       </tr>       <tr title="Ajusta a altura da Textarea de criação de anuncios">         <td>Altura da Textarea de criação de anúncios</td>         <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td>       </tr>       <tr title="Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar toca um som de alerta">         <td>Ativar/Desativar verificação de perguntas pendentes</td>         <td> &nbsp;<input type="checkbox" id="mfacil_perguntas" ' + mf_perguntas + '></td>       </tr>       <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático">         <td>Ativar/Desativar Respostas prontas</td>         <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td>       </tr>     </tbody>   </table>   <div id="respostas_prontas" style="display: none;">     <table>       <thead>         <tr>           <th>Título</th>           <th>Resposta</th>         </tr>       </thead>       <tbody>         <tr>           <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td>         </tr>       </tbody>     </table>   </div>   <button id="mfacil_salvar" class="ch-btn">Salvar</button>     <center>     <h2>Esta ferramenta tem sido útil pra você? Considere uma doação!</h2>     <table>       <tr>         <td> <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post"> <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> <input type="hidden" name="currency" value="BRL" /> <input type="hidden" name="receiverEmail" value="daniel.uramg@gmail.com" /> <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/120x53-doar-laranja.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /> </form> <!-- FINAL FORMULARIO BOTAO PAGSEGURO --></td>         </tr>     </table>   </center> </div>';
+        html_form_mfacil = '<a href="https://www.ideias.pw/mercadofacil-scriptaplicativo-para-mercadolivre/" target="_blank"><h1 class="main-title title title--primary">MercadoFacil</h1></a><a href="https://www.ideias.pw/script-de-chat-de-suporte-do-mercadolivre/" target="_blank"> <span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;position: absolute;right: 50px;top: 25px;" title="Iniciar Chat com MercadoLivre!"> Iniciar chat </span> </a><hr>   <input type="hidden" id="mfacil_first_install" value="instalado">         <table>     <tbody>       <tr title="Quando ativo, ao clicar no campo para responder uma pergunta, preenche automaticamente Bom dia/tarde/noite de acordo com o horário">         <td>Ativar/Desativar cumprimento automático</td>         <td> &nbsp;<input type="checkbox" id="mfacil_cumprimento" ' + mf_cumprimento + '></td>       </tr>       <tr title="Remover banners de publicidade da página de Resumo">         <td>Remover banners de publicidade da página de Resumo </td>         <td> &nbsp;<input type="checkbox" id="mfacil_banners" ' + mf_banners + '></td>       </tr>       <tr title="Exibe a situação de cada pagamento na página de Vendas Abertas ou Encerradas">         <td>Ativar/Desativar verificação de pagamento liberado</td>         <td> &nbsp;<input type="checkbox" id="mfacil_pagamento" ' + mf_pagamento + '></td>       </tr>       <tr title="Ajusta a altura da Textarea de criação de anuncios">         <td>Altura da Textarea de criação de anúncios</td>         <td> &nbsp;<input type="text" id="mfacil_textarea" value="' + mf_textarea + '" size="5"> px (padrão 560px)</td>       </tr>       <tr title="Quando ativo, a cada 30 segundos ser verificado se existem perguntas pendentes, e quando identificar toca um som de alerta">         <td>Ativar/Desativar verificação de perguntas pendentes</td>         <td> &nbsp;<input type="checkbox" id="mfacil_perguntas" ' + mf_perguntas + '></td>       </tr>       <tr title="Quando ativo, você clica com o botão direito no campo para responder alguma pergunta e escolhe uma de suas respostas prontas para preenchimento automático">         <td>Ativar/Desativar Respostas prontas</td>         <td> &nbsp;<input type="checkbox" id="mfacil_respostas" ' + mf_respostas + '></td>       </tr>     </tbody>   </table>   <div id="respostas_prontas" style="display: none;">     <table>       <thead>         <tr>           <th>Título</th>           <th>Resposta</th>         </tr>       </thead>       <tbody>         <tr>           <td> <input type="text" id="mfacil_tit1" value="' + mf_t1 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res1" value="' + mf_r1 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit2" value="' + mf_t2 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res2" value="' + mf_r2 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit3" value="' + mf_t3 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res3" value="' + mf_r3 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit4" value="' + mf_t4 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res4" value="' + mf_r4 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit5" value="' + mf_t5 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res5" value="' + mf_r5 + '" size="50"> </td>         </tr>         <tr>           <td> <input type="text" id="mfacil_tit6" value="' + mf_t6 + '" size="15"> </td>           <td> &nbsp;<input type="text" id="mfacil_res6" value="' + mf_r6 + '" size="50"> </td>         </tr>       </tbody>     </table>   </div>   <button id="mfacil_salvar" class="ch-btn">Salvar</button>     <hr/> <center>     <h2>Esta ferramenta tem sido útil pra você? Considere uma doação!</h2>     <table>       <tr>         <td> <!-- INICIO FORMULARIO BOTAO PAGSEGURO --> <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post"> <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --> <input type="hidden" name="currency" value="BRL" /> <input type="hidden" name="receiverEmail" value="daniel.uramg@gmail.com" /> <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/120x53-doar-laranja.gif" name="submit" alt="Doar com PagSeguro - é rápido, grátis e seguro!" /> </form> <!-- FINAL FORMULARIO BOTAO PAGSEGURO --></td>   <td> </td> <td> <a target="_blank" href="https://www.mercadopago.com/mlb/checkout/start?pref_id=152504742-5ace1e3c-2f5b-455f-bc11-00cff180a598"><img src="https://www.ideias.pw/doar-mp.png"/></a><td>    </tr>     </table>   </center>';
         $('#mfacil_fundo').after(div_mfacil + html_form_mfacil);
         if (mf_respostas == 'checked') $('#respostas_prontas').attr('style', 'display: block;');
     }
@@ -401,5 +402,292 @@ $(document).ready(function(){
 
     /******************** NA PAGINA DE PERGUNTAS ********************/
 
+    /******************** BLOQUEIO DE USUÁRIOS ********************/
+
+    //injeta botão de usuários bloqueados do MercdoFacil
+    mfacil_block_users = '<li role="presentation" class="ch-bellows"><span style="cursor: pointer;" id="mfacil_bl_users" class="ch-bellows-trigger">Usuários Bloqueados</span></li>';
+    $('#mfacil_button').after(mfacil_block_users);
+    if (debug == 1) GM_log("Link do Bloqueio de usuários injetado"); //debug
+    $(document).on('click', '#mfacil_bl_users', function(){
+        //Define Timestrap atual pra tornar a HTML "incacheavel", para em caso de alterações não ter problema em função do cache
+        var agora = Math.round(new Date().getTime()/1000);
+        GM_xmlhttpRequest({
+            method: "GET",
+            overrideMimeType: "text/html; charset=UTF-8",
+            url: "https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/lockusers.html?time=" + agora,
+            //se conseguiu carregar exibe o Changelog e grava a versão para não exibir mais
+            onload: function(response){
+                $('body').append(div_mfacil_fundo);
+                html_bloqueio = '<a href="https://www.ideias.pw/mercadofacil-scriptaplicativo-para-mercadolivre/" target="_blank"><h1 class="main-title title title--primary">MercadoFacil</h1></a><a href="https://www.ideias.pw/script-de-chat-de-suporte-do-mercadolivre/" target="_blank"> <span id="balloon" style="padding-left: 20px;background: url(\'https://secure.mlstatic.com/org-img/CHAT/icono_chat2.gif\') no-repeat scroll 0% 0% transparent;position: absolute;right: 50px;top: 25px;" title="Iniciar Chat com MercadoLivre!"> Iniciar chat </span> </a><hr> <div id="mf_lockusers" style="display: block;"> </div>';
+                $('#mfacil_fundo').after(div_mfacil + html_bloqueio);
+                $('#mf_lockusers').append(response.responseText);
+            },
+            onerror: function(res){
+                alert("Houve um erro ao tentar receber a tabela de usuários bloqueados, atualize a página e tente novamente.");
+            }
+        });
+    });
+
+    $(document).on('click', '#mfacil_bl_users', function(){
+        /** CRIAR COOKIE
+ * strCookie = Nome do cookie
+ * strValor = Valor que sera salvo no cookie
+ * lngDias = Dias de validade do cookie
+ */
+        function gerarCookie(strCookie, strValor, lngDias) {
+            $.cookie(strCookie, strValor, {
+                expires : lngDias
+            });
+        }
+
+        /** LER COOKIE
+ * nomeCookie = Nome que foi dado ao cookie durante a criação
+ */
+        function LerCookie(nomeCookie) {
+            if ( $.cookie(nomeCookie) )
+                return $.cookie(nomeCookie);
+            else
+                return false;
+        }
+
+        /** APAGAR COOKIE
+ * strCookie = Nome do cookie
+ */
+        function apagarCookie(strCookie) {
+            $.cookie(strCookie, null);
+        }
+
+        //Le a ID do usuário gravada no cookie
+        my_id = LerCookie('my_id');
+        mf_access_token = LerCookie('mf_access_token');
+
+        function get_id(){
+            if (debug == 1) GM_log('Não existe a ID do usuário armazenada, requisita a ID...');
+            //Primeiro captura o Username do usuário
+            $.get("https://myaccount.mercadolivre.com.br/profile", function(data, status){
+                username = $('.ch-form-row span', $(data)).html();
+                if (debug == 1) GM_log("Username capturado: " + username);
+                //Agora captura a ID com o Username
+                $.getJSON("https://api.mercadolibre.com/sites/MLB/search?nickname=" + username, function(data){
+                    user_id = data.seller.id;
+                    if (debug == 1) GM_log("user_id capturada: " + user_id);
+                    gerarCookie('my_id', user_id, 365);
+                });
+            });
+        }
+        //Le a ID do usuário gravada no cookie
+
+        //Obter o Token
+        //Define a variável de refeência para o getToken() ser executado somente uma vez
+        var contador = 0;
+        function getToken(){
+            //Soma +1 na variável de refeência para garantir a execuição do getToken() apenas uma vez
+            if (contador < 1){
+                contador += 1;
+                if (debug == 1) GM_log('dentro da func. contador = ' + contador);
+                var my_id = LerCookie('my_id');
+                //Se não existir my_id requisita ela, da um tempo e chama novamente a getToken()
+                if (my_id == ''){
+                    if (debug == 1 ) GM_log('my_id não encontrado dentro da getToken()....');
+                    get_id();
+                    setTimeout(function(){
+                        getToken();
+                    },3500);
+                }
+                else{
+                    my_id = LerCookie('my_id');
+                    if (debug == 1) GM_log("Dentro da getToken()..");
+                    //Define variavel com timestrap atual para comparar com o vencimento do token
+                    var agora = Math.round(new Date().getTime()/1000);
+                    //requisita o access_token previamente armazenado
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: "\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x75\x73\x65\x72\x73\x2F"+my_id+"\x2E\x78\x6D\x6C\x3F\x74\x69\x6D\x65\x3D"+agora,
+                        overrideMimeType: "text/xml",
+                        onload: function(xml){
+                            if (debug == 1) GM_log('Dentro do request do xml');
+                            console.log(xml);
+                            //se o status do XML for 404 é porque o usuário não se autenticou então abre a janela para autorizar o app
+                            if (xml.status == '404'){
+                                if (debug == 1) GM_log("O XML do usuário não foi encontrado. " + xml.status);
+                                if (debug == 1) GM_log('Token não existe, abre janela para autenticar');
+                                window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
+                            }
+                            //se foi encontrado HTML no XML é porque o usuário não se autenticou então abre a janela para autorizar o app
+                            $(xml.responseXML).find('html').each(function () {
+                                if (debug == 1) GM_log("O XML do usuário não foi encontrado. " + xml.status);
+                                if (debug == 1) GM_log('Token não existe, abre janela para autenticar');
+                                window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
+                            });
+                            $(xml.responseXML).find('users').each(function () {
+                                mf_access_token = $(this).find('access_token').text();
+                                if (debug == 1) GM_log('acces_token recebido do XML: ' + mf_access_token);
+                                expires_in = $(this).find('expires_in').text();
+                                //se o token ja tiver expirado, chama o script que renova o token
+                                if (expires_in < agora){
+                                    if (debug == 1) GM_log('Token venceu, renovar..');
+                                    if (debug == 1) GM_log('Agora: ' + agora);
+                                    if (debug == 1) GM_log('expires_in: ' + expires_in);
+                                    $.getJSON("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x72\x65\x6E\x65\x77\x5F\x74\x6F\x6B\x65\x6E\x2E\x70\x68\x70\x3F\x75\x73\x65\x72\x5F\x69\x64\x3D" + my_id, function(retorno){
+                                        //se não existir o token provavelmente o usuario nunca se autenticou, então abre a janela para autorizar o app
+                                        if (retorno.access_token == ''){
+                                            if (debug == 1) GM_log('Token não existe, abre janela para autenticar');
+                                            window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
+                                        }
+                                        //se recebeu o token, grava ele no cookie
+                                        else{
+                                            apagarCookie('mf_access_token');
+                                            gerarCookie('mf_access_token', retorno.access_token, 1);
+                                        }
+                                    });
+                                }
+                                //token gravado no servidor ainda ta valendo, grava ele no cookie
+                                else{
+                                    if (debug == 1) GM_log("access_token já gravado: " + mf_access_token);
+                                    apagarCookie('mf_access_token');
+                                    gerarCookie('mf_access_token', mf_access_token, 1);
+                                }
+                            });
+                        },
+                        onerror: function(res){
+                            if (debug == 1) GM_log("Ocorreu um erro inesperado durante a requisição do token. " + res.statusText);
+                            if (debug == 1) GM_log('Token não existe, abre janela para autenticar');
+                            window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
+                        }
+                    });
+                    setTimeout(function(){
+                        getlocks();
+                    },2500);
+                }
+            }
+            else{
+                if (debug == 1) GM_log('fora da func. contador = ' + contador);
+            }
+        }
+        //Obter o Token
+
+        //Mostrar usuários bloqueados
+        function getlocks(){
+            mf_access_token = LerCookie('mf_access_token');
+            my_id = LerCookie('my_id');
+            //Se não existir access_token requisita ele, da um tempo e chama novamente a getlocks()
+            if (mf_access_token == ''){
+                if (debug == 1 ) GM_log('access_token não encontrado dentro da getlocks()....');
+                getToken();
+                setTimeout(function(){
+                    getlocks();
+                },3500);
+            }
+            else{
+                if (debug == 1) GM_log('dentro do getlocks()');
+                //Limpa a tabela com os dados
+                $('#employeed_table').empty();
+                //Requisita a lista de usuarios bloqueados
+                $.getJSON("https://api.mercadolibre.com/users/" + my_id + "/order_blacklist?access_token=" + mf_access_token, function(data){
+                    // cria um "for assíncrono", passando o ponteiro inicial '0', a variável 'data' e um 'callback'
+                    forAsync(0, data, function(employee_data){
+                        // após a função executar todas as requisições, será retornada a variável employee_data
+                        $('#employeed_table').append(employee_data);
+                    });
+                })
+                    .fail(function(data) {
+                    if (data.responseJSON.message == "invalid_token"){
+                        if (debug == 1) GM_log("Token inválido, renovar o token");
+                    }
+                    getToken();
+                });
+                //Cria um loop sobre cada usuario bloqueado, para capturar os dados de cada usuario pela ID
+                function forAsync(i, data, callback, employee_data = null) {
+                    if(employee_data == null) {
+                        employee_data = '';
+                    }
+                    if(data.length > 0) {
+                        employee_data += '<tr>';
+                        //Captura os dados do respectivo usuário
+                        $.getJSON("https://api.mercadolibre.com/users/" + data[i].user.id + "?access_token=" + mf_access_token, function(valor){
+                            username = valor.nickname;
+                            registration_date = valor.registration_date;
+                            registration_date = registration_date.substr(8,2) + "/" + registration_date.substr(5,2) + "/" + registration_date.substr(0,4) + " - " + registration_date.substr(11,2) + ":" + registration_date.substr(14,2);
+                            city = valor.address.state + " - " + valor.address.city;
+                            points = valor.points;
+                            permalink = valor.permalink;
+                            employee_data += "<td><a target='_blank' href='" + permalink + "'>" + username + " (" + points + ")</a></td>";
+                            employee_data += '<td>' + city	 + '</td>';
+                            employee_data += '<td>' + registration_date + '</td>';
+                            employee_data += '<td>' + data[i].user.id + '</td>';
+                            employee_data += '<td align="center"><a href="#" id="unlock" username="' + username + '" user_id="' + data[i].user.id + '"><font color="#FF0000"><b>X</b></font></a></td>';
+                            employee_data += '</tr>';
+                            i++;
+
+                            if(i < data.length) {
+                                forAsync(i, data, callback, employee_data);
+                            }
+                            else {
+                                callback(employee_data);
+                            }
+                        });
+                    }
+                    else {
+                        callback(employee_data);
+                    }
+                }
+            }
+        }
+        //Mostrar usuários bloqueados
+
+        //Desbloquear usuário
+        $(document).on('click', '#unlock', function(){
+            mf_access_token = LerCookie('mf_access_token');
+            my_id = LerCookie('my_id');
+            user_id = $(this).attr('user_id');
+            username = $(this).attr('username');
+            x = confirm('Deseja desbloquear o ' + username + '?');
+            if (x == true){
+                GM_xmlhttpRequest({
+                    url: "https://api.mercadolibre.com/users/" + my_id + "/order_blacklist/" + user_id + "?access_token=" + mf_access_token,
+                    method: 'DELETE',
+                    overrideMimeType: "application/json",
+                    headers: {"Accept": "application/json"},
+                    onload: function(retorno){
+                        if (debug == 1) GM_log(retorno);
+                        getlocks();
+                    },
+                    onerror: function(result){
+                        alert("Ocorreu um erro: " + result.message);
+                    }
+                });
+            }
+        });
+        //Desbloquear usuário
+
+        //Bloquear usuário
+        $(document).on('click', '#block', function(){
+            mf_access_token = LerCookie('mf_access_token');
+            my_id = LerCookie('my_id');
+            username = $('#username').val();
+            if(username){
+                $.getJSON("https://api.mercadolibre.com/sites/MLB/search?nickname=" + username, function(data){
+                    var user_id = data.seller.id;
+                    $.ajax({
+                        url: "https://api.mercadolibre.com/users/" + my_id + "/order_blacklist?access_token=" + mf_access_token,
+                        type: 'POST',
+                        data: JSON.stringify({ user_id: user_id }),
+                        success: function(result){
+                            if (debug == 1) GM_log("Usuário bloqueado: " + result.user_blocked);
+                            getlocks();
+                        },
+                        error: function(result){
+                            alert("Ocorreu um erro: " + result.message);
+                        }
+                    });
+                });
+            }
+        });
+        //Bloquear usuário
+
+        //Chama a função pra exibir os bloqueados
+        getlocks();
+    });
+    /******************** BLOQUEIO DE USUÁRIOS ********************/
 
 });
