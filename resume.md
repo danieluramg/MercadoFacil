@@ -1,6 +1,7 @@
 
 # Usuários Bloqueados
 **A lista de Usuários Bloqueados nunca aparece**
+
 Ao requisitar a lista de Usuários Bloqueados, o MercadoFacil primeiro requisita esta lista através da API do MercadoLivre, que retorna a lista com a ID de cada usuário bloqueado, no entanto para requisitar outras informações (como Username e Localização por exemplo), o aplicativo precisa fazer uma nova requisição para **cada** usuário bloqueado, então se você tiver mil usuários bloqueados serão 1.000 requisições!
 Para se ter uma ideia de como isto é "cansativo" para o aplicativo, assista o vídeo abaixo:
 [![](https://www.awesomescreenshot.com/upload//15384/e10b6864-c8e8-494d-727f-bc755620f155.png)](https://www.youtube.com/watch?v=1AaBntFQ0Os)
