@@ -3,7 +3,7 @@
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @website https://www.ideias.pw/mercadofacil-scriptaplicativo-para-mercadolivre/
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
-// @version	2.1.180524.1345
+// @version	2.1.180618.1720
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
@@ -59,7 +59,6 @@ $(document).ready(function(){
     var mf_username = GM_getValue("mf_username");
     var mf_userid = GM_getValue("mf_userid");
     var mf_version = GM_getValue("mercadoFacil_version");
-    var mf_access_token = GM_getValue('mf_access_token');
     var mf_t1 = GM_getValue("mercadoFacil_t1");
     var mf_t2 = GM_getValue("mercadoFacil_t2");
     var mf_t3 = GM_getValue("mercadoFacil_t3");
@@ -459,90 +458,41 @@ $(document).ready(function(){
         });
     });
 
-    //Obter o Token
-    //Define a variável de refeência para o getToken() ser executado somente uma vez
-    var contador = 0;
-    function getToken(){
-        //Soma +1 na variável de refeência para garantir a execuição do getToken() apenas uma vez
-        if (contador < 1){
-            contador += 1;
-            if (debug == 1) GM_log("Dentro da getToken(), contador = " + contador);
-            //Define variavel com timestrap atual para comparar com o vencimento do token
-            var agora = Math.round(new Date().getTime()/1000);
-            //requisita o access_token previamente armazenado
-            GM_xmlhttpRequest({
-                method: "GET",
-                url: "\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x75\x73\x65\x72\x73\x2F"+mf_userid+"\x2E\x78\x6D\x6C\x3F\x74\x69\x6D\x65\x3D"+agora,
-                overrideMimeType: "text/xml",
-                onload: function(xml){
-                    if (debug == 1) GM_log('Dentro do request do xml');
-                    if (debug == 1) GM_log(xml);
-                    //se o status do XML for 404 é porque o usuário não se autenticou então abre a janela para autorizar o app
-                    if (xml.status == '404'){
-                        if (debug == 1) GM_log("O XML do usuário não foi encontrado. " + xml.status + " abre janela para autenticar");
-                        window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
-                    }
-                    //se foi encontrado HTML no XML é porque o usuário não se autenticou então abre a janela para autorizar o app
-                    $(xml.responseXML).find('html').each(function () {
-                        if (debug == 1) GM_log("O XML do usuário não foi encontrado. " + xml.status + " abre janela para autenticar");
-                        window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
-                    });
-                    $(xml.responseXML).find('users').each(function () {
-                        mf_access_token = $(this).find('access_token').text();
-                        if (debug == 1) GM_log('acces_token recebido do XML: ' + mf_access_token);
-                        expires_in = $(this).find('expires_in').text();
-                        //se o token ja tiver expirado, chama o script que renova o token
-                        if (expires_in < agora){
-                            if (debug == 1) GM_log('Token venceu, renovar..');
-                            if (debug == 1) GM_log('Agora: ' + agora);
-                            if (debug == 1) GM_log('expires_in: ' + expires_in);
-                            $.getJSON("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x72\x65\x6E\x65\x77\x5F\x74\x6F\x6B\x65\x6E\x2E\x70\x68\x70\x3F\x75\x73\x65\x72\x5F\x69\x64\x3D" + mf_userid, function(retorno){
-                                //se não existir o token provavelmente o usuario nunca se autenticou, então abre a janela para autorizar o app
-                                if (retorno.access_token == ''){
-                                    if (debug == 1) GM_log('Token não existe, abre janela para autenticar');
-                                    window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
-                                }
-                                //se recebeu o token, grava ele
-                                else{
-                                    GM_setValue('mf_access_token', retorno.access_token);
-                                }
-                            });
-                            //token gravado no servidor ainda ta valendo, grava ele
-                        }else{
-                            if (debug == 1) GM_log("access_token já gravado: " + mf_access_token);
-                            GM_setValue('mf_access_token', mf_access_token);
-                        }
-                    });
-                },
-                onerror: function(res){
-                    if (debug == 1) GM_log("Ocorreu um erro inesperado durante a requisição do token. " + res.statusText + " abre janela para autenticar");
+    //requisita o access_token
+    function getToken(param1){
+        if (debug == 1) GM_log("Dentro da getToken()");
+        var expires_in = GM_getValue('mf_expires_in');
+        //Define variavel com timestrap atual para comparar com o vencimento do token
+        var agora = Math.round(new Date().getTime()/1000);
+
+        if (expires_in < agora || !expires_in || param1 == 'force'){
+            if (debug == 1) GM_log('Token venceu, renovar..');
+            if (debug == 1) GM_log('Agora: ' + agora);
+            if (debug == 1) GM_log('expires_in: ' + expires_in);
+            $.getJSON("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x72\x65\x6E\x65\x77\x5F\x74\x6F\x6B\x65\x6E\x2E\x70\x68\x70\x3F\x75\x73\x65\x72\x5F\x69\x64\x3D" + mf_userid, function(retorno){
+                //se recebeu o token, grava ele
+                if (retorno.access_token){
+                    GM_setValue('mf_access_token', retorno.access_token);
+                    GM_setValue('mf_expires_in', retorno.expires_in);
+                    //se não existir o token provavelmente o usuario nunca se autenticou, então abre a janela para autorizar o app
+                }else{
+                    if (debug == 1) GM_log('Token não existe, abre janela para autenticar');
                     window.open("\x68\x74\x74\x70\x73\x3A\x2F\x2F\x6D\x65\x72\x63\x61\x64\x6F\x66\x61\x63\x69\x6C\x2E\x69\x64\x65\x69\x61\x73\x2E\x70\x77\x2F\x6C\x6F\x67\x69\x6E\x2E\x70\x68\x70","janela1","width=600, height=600, directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no");
                 }
             });
-            setTimeout(function(){
-                getlocks();
-            },2500);
-        }
-        else{
-            if (debug == 1) GM_log("fora da getToken(), contador = " + contador);
         }
     }
-    //Obter o Token
+    //requisita o access_token
 
     //Mostrar usuários bloqueados
     function getlocks(){
+        var mf_access_token = GM_getValue('mf_access_token');
         //Se não existir access_token requisita ele, da um tempo e chama novamente a getlocks()
-        if (mf_access_token == ''){
-            if (debug == 1 ) GM_log('access_token não encontrado dentro da getlocks()....');
-            getToken();
-            setTimeout(function(){
-                getlocks();
-            },3500);
-        }
-        else{
+        if (mf_access_token){
             if (debug == 1) GM_log('dentro do getlocks()');
-            //Limpa a tabela com os dados
             $('#employeed_table').empty();
+            $('#employeed_table').append('<tr id="mf_loading"><td align="center" colspan="5"> Carregando lista de usuários, pode demorar um pouco... <img id="webtracker_loading" src="https://http2.mlstatic.com/secure/org-img/ch/assets/0.3/loading.gif"/></td></tr>');
+
             //Requisita a lista de usuarios bloqueados
             $.getJSON("https://api.mercadolibre.com/users/" + mf_userid + "/order_blacklist?access_token=" + mf_access_token, function(data){
                 //Cria um laço para percorrer cada usuário bloqueado
@@ -588,12 +538,25 @@ $(document).ready(function(){
                     }
                 }
             })
+                //Remove o "loading" quando terminar de preencher
+                .done(function() {
+                $('#mf_loading').empty();
+            })
                 .fail(function(data) {
-                if (data.responseJSON.message == "invalid_token"){
-                    if (debug == 1) GM_log("Token inválido, renovar o token");
-                }
-                getToken();
+                //if (data.responseJSON.message == "invalid_token"){
+                if (debug == 1) GM_log("Token inválido, renovar o token");
+                getToken('force');
+                setTimeout(function(){
+                    getlocks();
+                },5000);
+                //}
             });
+        }else{
+            if (debug == 1 ) GM_log('access_token não encontrado dentro da getlocks()....');
+            getToken();
+            setTimeout(function(){
+                getlocks();
+            },5000);
         }
     }
     //Mostrar usuários bloqueados
