@@ -3,7 +3,7 @@
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @website https://www.ideias.pw/mercadofacil-scriptaplicativo-para-mercadolivre/
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
-// @version	2.1.180618.1720
+// @version	2.1.180619.1000
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
@@ -563,8 +563,9 @@ $(document).ready(function(){
 
     //Desbloquear usuário
     $(document).on('click', '#unlock', function(){
-        user_id = $(this).attr('user_id');
-        username = $(this).attr('username');
+        var mf_access_token = GM_getValue('mf_access_token');
+        var user_id = $(this).attr('user_id');
+        var username = $(this).attr('username');
         x = confirm('Deseja desbloquear o ' + username + '?');
         if (x == true){
             GM_xmlhttpRequest({
@@ -586,7 +587,8 @@ $(document).ready(function(){
 
     //Bloquear usuário
     $(document).on('click', '#block', function(){
-        username = $('#username').val();
+        var mf_access_token = GM_getValue('mf_access_token');
+        var username = $('#username').val();
         if(username){
             $.getJSON("https://api.mercadolibre.com/sites/MLB/search?nickname=" + username, function(data){
                 var user_id = data.seller.id;
