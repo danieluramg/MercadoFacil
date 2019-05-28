@@ -3,7 +3,7 @@
 // @author	Daniel Plácido (daniel.uramg@gmail.com)
 // @website https://www.ideias.pw/mercadofacil-scriptaplicativo-para-mercadolivre/
 // @description	Modificações na página do ML para facilitar o gerenciamento das vendas
-// @version	2.1.180919.1848
+// @version	2.1.190528.1038
 // @downloadURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @updateURL	https://raw.githubusercontent.com/danieluramg/MercadoFacil/master/mercadofacil.user.js
 // @require	https://www.ideias.pw/userscripts/jquery-2.1.1.min.js
@@ -32,7 +32,7 @@ $(document).ready(function(){
         if (debug == 1) GM_log('Capturar Username e ID do usuário');
         //Primeiro captura o Username do usuário
         $.get("https://myaccount.mercadolivre.com.br/profile", function(data, status){
-            username = $('.ch-form-row span', $(data)).html();
+            username = $('span', $('.field-value__group__value', $(data))).html().replace(' ', '+');
             GM_setValue('mf_username', username);
             if (debug == 1) GM_log("Username capturado: " + username);
             //Agora captura a ID com o Username
